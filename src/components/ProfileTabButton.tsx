@@ -18,9 +18,9 @@ const ProfileBarButton = ({ children, onPress }: ProfileBarProps) => {
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View className='w-20 h-20 rounded-full -top-4'>
         <ImageBackground
-          className='w-32 h-32 absolute -top-6 -right-6 rounded-full'
+          className='w-32 h-32 absolute -top-8 -right-6 rounded-full'
           resizeMode='cover'
-          source={require('../../assets/icons/profile_bg.png')}
+          source={require('assets/icons/profile_bg.png')}
         >
           {children}
         </ImageBackground>
