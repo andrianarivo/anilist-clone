@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 interface DataItem {
   key: string;
@@ -9,30 +9,17 @@ interface DataItem {
 
 const ListItem = (item: DataItem) => {
   return (
-    <View style={styles.item}>
+    <View className='p-2 items-center'>
       <Image
+        className='w-60 h-60'
         source={{
           uri: item.uri,
         }}
-        style={styles.itemPhoto}
         resizeMode='cover'
       />
-      <Text style={styles.itemText}>{item.text}</Text>
+      <Text className='text-slate-500 mt-2'>{item.text}</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    margin: 10,
-  },
-  itemPhoto: {
-    width: 200,
-    height: 200,
-  },
-  itemText: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    marginTop: 5,
-  },
-});
 export default ListItem;

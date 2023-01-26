@@ -1,8 +1,5 @@
 import ProfileBarButton from '@components/ProfileTabButton';
-import {
-  BottomTabBarHeightCallbackContext,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
   DefaultTheme,
   NavigationContainer,
@@ -53,7 +50,7 @@ const NavigationTheme = {
   },
 };
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 interface NavigatorProps {
   onLayoutRootView: () => Promise<void>;
@@ -102,9 +99,6 @@ const AppNavigator = (props: NavigatorProps) => {
                   />
                 </LinearGradient>
               );
-            },
-            tabBarButton: (props) => {
-              return <ProfileBarButton {...props} />;
             },
           }}
         />
