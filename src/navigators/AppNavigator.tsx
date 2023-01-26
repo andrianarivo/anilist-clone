@@ -1,5 +1,6 @@
+import { TabBg } from '@/svg/TabBg';
 import ProfileBarButton from '@components/ProfileTabButton';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   DefaultTheme,
   NavigationContainer,
@@ -14,7 +15,7 @@ import Videos from '@screens/Videos';
 import { colors } from '@theme/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Image, Platform } from 'react-native';
+import { Image, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const renderTabBarIcon = (route: RouteProp<ParamListBase, string>) => {
@@ -46,11 +47,12 @@ const NavigationTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    background: colors.background,
     card: colors.background,
   },
 };
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 interface NavigatorProps {
   onLayoutRootView: () => Promise<void>;
@@ -59,7 +61,7 @@ interface NavigatorProps {
 const AppNavigator = (props: NavigatorProps) => {
   const insets = useSafeAreaInsets();
   let bottomOffset = 0;
-  if (Platform.OS == 'ios') {
+  if (Platform.OS === 'ios') {
     bottomOffset = insets.bottom;
   }
   return (
@@ -77,7 +79,15 @@ const AppNavigator = (props: NavigatorProps) => {
           },
           tabBarStyle: {
             borderTopColor: colors.palette.neutral900,
-            height: '9.5%',
+            borderTopWidth: 0,
+            height: 75,
+          },
+          tabBarBackground: () => {
+            return (
+              <View className='grow bg-default'>
+                <TabBg className='grow' />
+              </View>
+            );
           },
         })}
       >
@@ -99,6 +109,9 @@ const AppNavigator = (props: NavigatorProps) => {
                   />
                 </LinearGradient>
               );
+            },
+            tabBarButton: (props) => {
+              return <ProfileBarButton {...props} />;
             },
           }}
         />

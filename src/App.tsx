@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 if (Platform.OS === 'android') {
-  NavigationBar.setBackgroundColorAsync('#18181b');
+  NavigationBar.setBackgroundColorAsync('#1a1a1b');
 }
 
 interface AppProps {

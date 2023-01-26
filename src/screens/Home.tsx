@@ -104,7 +104,7 @@ const Home = () => {
   const insets = useSafeAreaInsets();
   return (
     <View
-      className='flex-1 bg-default'
+      className='flex-1 '
       style={{
         paddingTop: insets.top,
       }}
