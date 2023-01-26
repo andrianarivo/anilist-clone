@@ -1,3 +1,4 @@
+import { TabBg } from '@/svg/TabBg';
 import React, { MouseEvent, ReactNode } from 'react';
 import {
   GestureResponderEvent,
@@ -17,6 +18,7 @@ const ProfileBarButton = ({ children, onPress }: ProfileBarProps) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View className='w-20 h-20 rounded-full -top-4'>
+        <TabBg />
         <ImageBackground
           className='w-32 h-32 absolute -top-8 -right-6 rounded-full'
           resizeMode='cover'
