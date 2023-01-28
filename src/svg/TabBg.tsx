@@ -14,35 +14,16 @@ type Props = SvgProps & {
 
 export const TabBg: React.FC<Props> = ({ color = '#FFFFFF', ...props }) => {
   return (
-    <Svg
-      width={390}
-      height={65}
-      viewBox='0 0 390 75'
-      fill='none'
-      {...props}
-    >
-      <G filter='url(#filter0_d_32_220)'>
+    <Svg width={104} height={75} viewBox='0 0 104 75' fill='none' {...props}>
+      <G filter='url(#filter0_d_1_419)'>
         <Path
           fillRule='evenodd'
           clipRule='evenodd'
-          d='M195 51c18.778 0 34-15.222 34-34 0-6.193-1.656-12-4.549-17H390v40c0 27.614-22.386 50-50 50H50C22.386 90 0 67.614 0 40V0h165.549A33.843 33.843 0 00161 17c0 18.778 15.222 34 34 34z'
-          fill='url(#paint0_linear_32_220)'
-          fillOpacity={0.27}
+          d='M52 48.66c18.778 0 34-14.575 34-32.554C86 10.247 84.383 4.75 81.553 0H100v75H4V0h18.447A31.346 31.346 0 0018 16.106C18 34.085 33.222 48.66 52 48.66z'
+          fill='#18181B'
         />
       </G>
-      <Defs>
-        <LinearGradient
-          id='paint0_linear_32_220'
-          x1={195}
-          y1={0}
-          x2={195}
-          y2={90}
-          gradientUnits='userSpaceOnUse'
-        >
-          <Stop stopColor='#fff' />
-          <Stop offset={1} stopColor='#fff' stopOpacity={0} />
-        </LinearGradient>
-      </Defs>
+      <Defs></Defs>
     </Svg>
   );
 };

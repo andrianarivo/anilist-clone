@@ -14,6 +14,7 @@ import Profile from '@screens/Profile';
 import Videos from '@screens/Videos';
 import { colors } from '@theme/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useMediaQuery } from 'native-base';
 import React from 'react';
 import { Image, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -48,7 +49,6 @@ const NavigationTheme = {
   colors: {
     ...DefaultTheme.colors,
     background: colors.background,
-    card: colors.background,
   },
 };
 
@@ -59,6 +59,10 @@ interface NavigatorProps {
 }
 
 const AppNavigator = (props: NavigatorProps) => {
+  const [isSmallScreen] = useMediaQuery({
+    minHeight: 280,
+    maxHeight: 480
+  });
   const insets = useSafeAreaInsets();
   let bottomOffset = 0;
   if (Platform.OS === 'ios') {
@@ -78,16 +82,11 @@ const AppNavigator = (props: NavigatorProps) => {
             return renderTabBarIcon(route);
           },
           tabBarStyle: {
-            borderTopColor: colors.palette.neutral900,
             borderTopWidth: 0,
-            height: 75,
+            height: isSmallScreen ? 75 : 55,
           },
           tabBarBackground: () => {
-            return (
-              <View className='grow bg-default'>
-                <TabBg className='grow' />
-              </View>
-            );
+            return <View className='grow bg-deep-dark' />;
           },
         })}
       >

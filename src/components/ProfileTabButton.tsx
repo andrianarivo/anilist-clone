@@ -1,3 +1,4 @@
+import { TabBg } from '@/svg/TabBg';
 import React, { MouseEvent, ReactNode } from 'react';
 import {
   GestureResponderEvent,
