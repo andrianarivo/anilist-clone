@@ -1,4 +1,3 @@
-import { TabBg } from '@/svg/TabBg';
 import ProfileBarButton from '@components/ProfileTabButton';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
@@ -17,7 +16,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useMediaQuery } from 'native-base';
 import React from 'react';
 import { Image, Platform, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const renderTabBarIcon = (route: RouteProp<ParamListBase, string>) => {
   let icon;
@@ -59,15 +57,9 @@ interface NavigatorProps {
 }
 
 const AppNavigator = (props: NavigatorProps) => {
-  const [isSmallScreen] = useMediaQuery({
-    minHeight: 280,
-    maxHeight: 480
+  const [isMediumScreen] = useMediaQuery({
+    minHeight: 830,
   });
-  const insets = useSafeAreaInsets();
-  let bottomOffset = 0;
-  if (Platform.OS === 'ios') {
-    bottomOffset = insets.bottom;
-  }
   return (
     <NavigationContainer
       theme={NavigationTheme}
@@ -83,7 +75,7 @@ const AppNavigator = (props: NavigatorProps) => {
           },
           tabBarStyle: {
             borderTopWidth: 0,
-            height: isSmallScreen ? 75 : 55,
+            height: isMediumScreen && Platform.OS === 'ios' ? 75 : 55,
           },
           tabBarBackground: () => {
             return <View className='grow bg-deep-dark' />;
