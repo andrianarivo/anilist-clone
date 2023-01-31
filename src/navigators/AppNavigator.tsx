@@ -1,4 +1,5 @@
 import ProfileBarButton from '@components/ProfileTabButton';
+import '@expo/match-media';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   DefaultTheme,
@@ -13,9 +14,9 @@ import Profile from '@screens/Profile';
 import Videos from '@screens/Videos';
 import { colors } from '@theme/colors';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useMediaQuery } from 'native-base';
 import React from 'react';
 import { Image, Platform, View } from 'react-native';
+import { useMediaQuery } from 'react-responsive';
 
 const renderTabBarIcon = (route: RouteProp<ParamListBase, string>) => {
   let icon;
@@ -57,8 +58,8 @@ interface NavigatorProps {
 }
 
 const AppNavigator = (props: NavigatorProps) => {
-  const [isMediumScreen] = useMediaQuery({
-    minHeight: 830,
+  const isMediumScreen = useMediaQuery({
+    minDeviceHeight: 830,
   });
   return (
     <NavigationContainer

@@ -1,7 +1,6 @@
 import Star from '@/svg/Star';
 import React from 'react';
-import { View, ViewProps } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, View, ViewProps } from 'react-native';
 
 type Props = ViewProps & {
   count: number;

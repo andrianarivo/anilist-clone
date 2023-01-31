@@ -1,10 +1,49 @@
+import { colors } from '@theme/colors';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View, ViewProps } from 'react-native';
+import * as Progress from 'react-native-progress';
 
-const Watching = () => {
+type Props = ViewProps & {
+  title: string;
+  episode?: string;
+  progress?: number;
+  season?: string;
+  uri: string;
+};
+const Watching = ({
+  title,
+  episode,
+  progress,
+  uri,
+  season,
+  ...props
+}: Props) => {
   return (
-    <View>
-      <Text>Watching</Text>
+    <View {...props} className='mx-2'>
+      <View className='overflow-hidden rounded-lg shadow-lg w-[162] h-[124]'>
+        <Image className='w-full h-full' source={{ uri: uri }} />
+        <Progress.Bar
+          className='absolute top-[122] w-full'
+          borderWidth={0}
+          progress={progress}
+          height={2}
+          color={colors.palette.angry500}
+          width={null}
+        />
+      </View>
+      <View
+        className='my-1'
+        style={{
+          alignItems: episode ? 'flex-start' : 'center',
+        }}
+      >
+        <Text className='font-bold text-md text-white'>{title}</Text>
+        {episode && (
+          <Text className='font-sm text-neutral500'>
+            S.{season} Ep. {episode}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
