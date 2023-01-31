@@ -1,3 +1,4 @@
+import Anime from '@components/Anime';
 import CollectionView from '@components/CollectionView';
 import NewRelease from '@components/NewRelease';
 import Watching from '@components/Watching';
@@ -5,13 +6,15 @@ import React from 'react';
 import { FlatList, Image, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-type CollectionType = 'horizontal' | 'grid' | 'banner';
+type CollectionType = 'horizontal' | 'grid';
+
 interface SectionData {
   title: string;
-  useGrid?: boolean;
+  watching?: boolean;
   type: CollectionType;
   data: ReadonlyArray<Item>;
 }
+
 interface Item {
   title: string;
   episode?: string;
@@ -25,6 +28,7 @@ interface Item {
   uri: string;
   key: string;
 }
+
 const WATCHING: ReadonlyArray<Item> = [
   {
     episode: '4',
@@ -68,6 +72,7 @@ const WATCHING: ReadonlyArray<Item> = [
     uri: 'https://picsum.photos/id/1008/200',
   },
 ];
+
 const DATAS = [
   {
     title: 'Item text 1',
@@ -107,6 +112,20 @@ const DATAS = [
   },
 ];
 
+const SECTIONS: ReadonlyArray<SectionData> = [
+  {
+    title: 'Continue watching',
+    watching: true,
+    type: 'horizontal',
+    data: WATCHING,
+  },
+  {
+    title: 'Datas',
+    type: 'grid',
+    data: DATAS,
+  },
+];
+
 const Home = () => {
   const insets = useSafeAreaInsets();
   return (
@@ -116,8 +135,7 @@ const Home = () => {
         paddingTop: insets.top,
       }}
     >
-      <FlatList
-        showsVerticalScrollIndicator={false}
+      <CollectionView
         ListHeaderComponent={
           <View>
             <Text className='ml-4 text-md text-white font-regular my-4'>
@@ -131,25 +149,15 @@ const Home = () => {
               nbUsers={384}
               coverUri='https://www.cheatsheet.com/wp-content/uploads/2022/04/Demon-Slayer-Tanjiro.jpg'
             />
+          </View>
+        }
+        sections={SECTIONS}
+        renderSectionHeader={({ section }) => {
+          return section.watching ? (
             <Text className='ml-4 text-md text-white font-regular my-4'>
-              Continue watching.
+              {section.title}
             </Text>
-            <FlatList
-              horizontal
-              data={WATCHING}
-              renderItem={({ item }) => {
-                return (
-                  <Watching
-                    season={item.season}
-                    title={item.title}
-                    episode={item.episode}
-                    progress={item.progress}
-                    uri={item.uri}
-                  />
-                );
-              }}
-              showsHorizontalScrollIndicator={false}
-            />
+          ) : (
             <View className='flex-row justify-between items-center w-3/4'>
               <Text className='ml-4 text-md text-white font-bold my-4'>
                 • For you
@@ -158,25 +166,24 @@ const Home = () => {
               <Text className='ml-4 text-md text-neutral500 my-4'>Popular</Text>
               <Text className='ml-4 text-md text-neutral500 my-4'>Popular</Text>
             </View>
-          </View>
-        }
-        contentContainerStyle={{
-          alignItems: 'center',
+          );
         }}
-        numColumns={2}
-        keyExtractor={(item) => item.key}
-        data={DATAS}
-        renderItem={({ item }) => {
-          return (
-            <View className='items-center'>
-              <View className='overflow-hidden rounded-2xl m-1 shadow-lg w-[124] h-[124]'>
-                <Image className='w-full h-full' source={{ uri: item.uri }} />
-              </View>
-              <Text className='font-bold text-md text-white'>{item.title}</Text>
-              <Text className='font-regular text-xs text-neutral500'>
-                {item.year}
-              </Text>
-            </View>
+        renderElement={({ section, item }) => {
+          return section.watching ? (
+            <Watching
+              season={item.season}
+              title={item.title}
+              episode={item.episode}
+              progress={item.progress}
+              uri={item.uri}
+            />
+          ) : (
+            <Anime
+              className='mb-2'
+              uri={item.uri}
+              title={item.title}
+              year={item.year!}
+            />
           );
         }}
       />

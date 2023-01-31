@@ -1,31 +1,37 @@
+import '@expo/match-media';
 import React from 'react';
 import {
   FlatList,
-  ListRenderItem,
+  Platform,
   SectionList,
   SectionListData,
   SectionListProps,
 } from 'react-native';
+import { useMediaQuery } from 'react-responsive';
+
+type DefaultItemT = {
+  key: string;
+};
 
 type SectionType<ItemT> = SectionListData<ItemT> & { useGrid?: boolean };
 
-type CollectionViewProps<ItemT> = SectionListProps<ItemT> & {
-  sections: ReadonlyArray<SectionType<ItemT>>;
-  renderSectionHeader?: (info: {
-    section: SectionListData<ItemT>;
-  }) => React.ReactElement | null;
-  renderItem?: ListRenderItem<ItemT> | null | undefined;
-  renderSingle?: (info: {
-    section: SectionListData<ItemT>;
-  }) => React.ReactElement | null;
+type ElementInfo<ItemT> = {
+  section: SectionListData<ItemT>;
+  item: ItemT;
 };
 
-const renderSectionByType = <ItemT extends object & { key: string }>(
-  section: SectionListData<ItemT>,
-  renderItem: ListRenderItem<ItemT> | null | undefined,
-  renderSingle?: (info: {
+type CollectionViewProps<ItemT> = SectionListProps<ItemT> & {
+  sections: ReadonlyArray<SectionType<ItemT>>;
+  renderSectionHeader: (info: {
     section: SectionListData<ItemT>;
-  }) => React.ReactElement | null
+  }) => React.ReactElement | null;
+  renderElement: (info: ElementInfo<ItemT>) => React.ReactElement | null;
+};
+
+const renderSectionByType = <ItemT extends DefaultItemT>(
+  section: SectionListData<ItemT>,
+  renderElement: (info: ElementInfo<ItemT>) => React.ReactElement | null,
+  colCount: number
 ) => {
   switch (section.type) {
     case 'horizontal':
@@ -33,7 +39,9 @@ const renderSectionByType = <ItemT extends object & { key: string }>(
         <FlatList
           horizontal
           data={section.data}
-          renderItem={renderItem}
+          renderItem={({ item }) => {
+            return renderElement({ section, item });
+          }}
           showsHorizontalScrollIndicator={false}
         />
       );
@@ -41,25 +49,29 @@ const renderSectionByType = <ItemT extends object & { key: string }>(
       return (
         <FlatList
           className='self-center'
-          numColumns={2}
+          numColumns={colCount}
           keyExtractor={(item) => item.key}
           data={section.data}
-          renderItem={renderItem}
+          renderItem={({ item }) => {
+            return renderElement({ section, item });
+          }}
           showsHorizontalScrollIndicator={false}
         />
       );
-    case 'banner':
-      return renderSingle?.({ section: section });
   }
 };
 
-const CollectionView = <ItemT extends object & { key: string }>({
+const CollectionView = <ItemT extends DefaultItemT>({
   sections,
   renderSectionHeader,
-  renderItem,
-  renderSingle,
+  renderElement,
   ...props
 }: CollectionViewProps<ItemT>) => {
+  const isMediumScreen = useMediaQuery({
+    minDeviceWidth: 385,
+  });
+  const supportsMultipleCol = isMediumScreen && Platform.OS !== 'ios';
+  const colCount = supportsMultipleCol ? 3 : 2;
   return (
     <SectionList
       {...props}
@@ -72,7 +84,7 @@ const CollectionView = <ItemT extends object & { key: string }>({
             //TODO: separate in a TSX file
             renderSectionHeader?.({ section: section })
           }
-          {renderSectionByType(section, renderItem, renderSingle)}
+          {renderSectionByType(section, renderElement, colCount)}
         </>
       )}
       renderItem={() => {

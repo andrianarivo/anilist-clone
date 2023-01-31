@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "npx expo start --dev-client",
+    "build:android": "eas build --platform android --profile development",
+    "build:ios": "eas build --platform ios --profile development",
+    "build:all": "eas build --platform all --profile development",
     "web": "expo start --web"
   },
   "dependencies": {
