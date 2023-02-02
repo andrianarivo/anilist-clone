@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Image, Text, View, ViewProps } from 'react-native';
 import Rating from './Rating';
@@ -19,22 +20,30 @@ const NewRelease = ({
   ...props
 }: Props) => {
   return (
-    <View {...props} className='rounded-xl overflow-hidden shadow-lg'>
-      <Image
-        className='w-full h-[187]'
-        resizeMode='cover'
-        source={{ uri: coverUri }}
-      />
-      <View className='absolute w-screen'>
-        <View className='flex-row justify-between items-end top-32'>
-          <View className='ml-4'>
-            <Text className='text-2xl text-white font-bold'>{title}</Text>
-            <Text className='text-xs text-neutral500'>{publisher}</Text>
+    <LinearGradient
+      {...props}
+      className='rounded-xl'
+      colors={['#19A1BE', '#7D4192']}
+    >
+      <View className='m-1'>
+        <View className='w-screen'>
+          <View className='flex-row justify-between items-end mb-2'>
+            <View className='ml-2 wrap'>
+              <Text className='text-2xl text-white font-bold w-[230]'>
+                {title}
+              </Text>
+              <Text className='text-xs text-white'>Studio: {publisher}</Text>
+            </View>
+            <Rating className='mr-12' count={ratings} nbUsers={nbUsers} />
           </View>
-          <Rating className='mr-12' count={ratings} nbUsers={nbUsers} />
         </View>
+        <Image
+          className='rounded-md overflow-hidden shadow-lg w-full h-[187]'
+          resizeMode='repeat'
+          source={{ uri: coverUri }}
+        />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

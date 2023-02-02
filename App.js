@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { useFonts } from '@expo-google-fonts/roboto';
 import { customFontsToLoad } from '@theme/typography';
 import { registerRootComponent } from 'expo';
@@ -7,7 +8,12 @@ import App from './src/App.tsx';
 
 SplashScreen.preventAutoHideAsync();
 
-function AnilistApp() {
+const client = new ApolloClient({
+  uri: 'https://graphql.anilist.co',
+  cache: new InMemoryCache(),
+});
+
+const AnilistApp = () => {
   const [areFontsLoaded] = useFonts(customFontsToLoad);
 
   const onLayoutRootView = useCallback(async () => {
@@ -20,8 +26,12 @@ function AnilistApp() {
     return null;
   }
 
-  return <App onLayoutRootView={onLayoutRootView} />;
-}
+  return (
+    <ApolloProvider client={client}>
+      <App onLayoutRootView={onLayoutRootView} />
+    </ApolloProvider>
+  );
+};
 
 registerRootComponent(AnilistApp);
 export default AnilistApp;

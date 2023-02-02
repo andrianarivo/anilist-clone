@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client';
 import Anime from '@components/Anime';
 import CollectionView from '@components/CollectionView';
 import NewRelease from '@components/NewRelease';
@@ -28,6 +29,41 @@ interface Item {
   uri: string;
   key: string;
 }
+
+const lastMonth = () => {
+  let d = new Date();
+  let m = d.getMonth();
+  d.setMonth(d.getMonth() - 1);
+  // If still in same month, set date to last day of
+  // previous month
+  if (d.getMonth() == m) d.setDate(0);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+const MEDIA_TREND = gql`{
+    MediaTrend(date_greater: ${(lastMonth().valueOf() / 1000) | 0}) {
+      date
+      inProgress
+      averageScore
+      media {
+        id
+        title {
+          userPreferred
+        }
+        coverImage {
+          extraLarge
+        }
+        studios(isMain: true) {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 const WATCHING: ReadonlyArray<Item> = [
   {
@@ -127,7 +163,35 @@ const SECTIONS: ReadonlyArray<SectionData> = [
 ];
 
 const Home = () => {
+  const { loading, error, data } = useQuery(MEDIA_TREND);
   const insets = useSafeAreaInsets();
+
+  if (loading)
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <Text className='text-white'>Loading</Text>
+      </View>
+    );
+  if (error) {
+    console.log(error);
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <Text className='text-white'>Error fetching data</Text>
+      </View>
+    );
+  }
+
+  let item = {
+    title: data.MediaTrend.media.title.userPreferred,
+    publisher:
+      data.MediaTrend.media.studios.nodes.length > 0
+        ? data.MediaTrend.media.studios.nodes[0].name
+        : 'Unknown',
+    ratings: Math.floor(data.MediaTrend.averageScore / 5),
+    nbUsers: data.MediaTrend.inProgress,
+    coverUri: data.MediaTrend.media.coverImage.extraLarge,
+  };
+
   return (
     <View
       className='flex-1'
@@ -143,11 +207,11 @@ const Home = () => {
             </Text>
             <NewRelease
               className='mx-4'
-              title='Demon Slayer'
-              publisher='Shueisha'
-              ratings={5}
-              nbUsers={384}
-              coverUri='https://www.cheatsheet.com/wp-content/uploads/2022/04/Demon-Slayer-Tanjiro.jpg'
+              title={item.title}
+              publisher={item.publisher}
+              ratings={item.ratings}
+              nbUsers={item.nbUsers}
+              coverUri={item.coverUri}
             />
           </View>
         }
@@ -192,74 +256,3 @@ const Home = () => {
 };
 
 export default Home;
-/*
-
-      <CollectionView
-        sections={SECTIONS}
-        renderSectionHeader={({ section }) => (
-          <Text className='ml-4 text-md text-white font-regular my-4'>
-            {section.title}
-          </Text>
-        )}
-        renderItem={({ item }) => {
-          return item.showInGrid ? (
-            <Text>CACA</Text>
-          ) : (
-            <Watching
-              season={item.season}
-              title={item.title}
-              episode={item.episode}
-              progress={item.progress}
-              uri={item.uri}
-            />
-          );
-        }}
-        renderSingle={({ section }) => {
-          return (
-            
-          );
-        }}
-      />
-  {
-    title: 'For you',
-    type: 'grid',
-    data: [
-      {
-        title: 'Item text 1',
-        key: '6',
-        year: 2022,
-        showInGrid: true,
-        uri: 'https://picsum.photos/id/1011/200',
-      },
-      {
-        title: 'Item text 2',
-        key: '7',
-        year: 2022,
-        showInGrid: true,
-        uri: 'https://picsum.photos/id/1012/200',
-      },
-
-      {
-        title: 'Item text 3',
-        key: '8',
-        year: 2022,
-        showInGrid: true,
-        uri: 'https://picsum.photos/id/1013/200',
-      },
-      {
-        title: 'Item text 4',
-        key: '9',
-        year: 2022,
-        showInGrid: true,
-        uri: 'https://picsum.photos/id/1015/200',
-      },
-      {
-        title: 'Item text 5',
-        key: '10',
-        year: 2022,
-        showInGrid: true,
-        uri: 'https://picsum.photos/id/1016/200',
-      },
-    ],
-  },
-      */

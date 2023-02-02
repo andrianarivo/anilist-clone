@@ -15,7 +15,7 @@ const Rating = ({ count, nbUsers, ...props } = defaults) => {
   return (
     <View {...props} className='items-end'>
       <View className='flex-row'>
-        {[...Array(count).keys()].map((key) => {
+        {[...Array(Math.floor(count/20)).keys()].map((key) => {
           let keyString = `star-${key}`;
           return (
             <Star
@@ -27,7 +27,8 @@ const Rating = ({ count, nbUsers, ...props } = defaults) => {
           );
         })}
       </View>
-      <Text className='text-xs text-neutral500'>From {nbUsers} users</Text>
+      <Text className='font-bold text-xs text-white'>{count}/100</Text>
+      <Text className='text-xs text-white'>Watched by {nbUsers} users</Text>
     </View>
   );
 };
