@@ -14,7 +14,6 @@
     "@expo-google-fonts/roboto": "^0.2.2",
     "@expo/match-media": "^0.4.0",
     "@react-navigation/bottom-tabs": "^6.5.3",
-    "@react-navigation/material-bottom-tabs": "^6.2.11",
     "@react-navigation/native": "^6.1.2",
     "expo": "~47.0.12",
     "expo-dev-client": "~2.0.1",

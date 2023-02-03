@@ -1,5 +1,5 @@
-import { View, Text, Image, ViewProps } from 'react-native';
 import React from 'react';
+import { Image, Text, View, ViewProps } from 'react-native';
 
 type Props = ViewProps & {
   uri: string;

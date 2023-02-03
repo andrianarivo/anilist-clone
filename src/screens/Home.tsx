@@ -1,11 +1,14 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import Anime from '@components/Anime';
 import CollectionView from '@components/CollectionView';
 import NewRelease from '@components/NewRelease';
 import Watching from '@components/Watching';
-import React from 'react';
-import { FlatList, Image, ScrollView, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 type CollectionType = 'horizontal' | 'grid';
 
@@ -163,96 +166,121 @@ const SECTIONS: ReadonlyArray<SectionData> = [
 ];
 
 const Home = () => {
-  const { loading, error, data } = useQuery(MEDIA_TREND);
-  const insets = useSafeAreaInsets();
+  const [getMedia, { loading, error, data }] = useLazyQuery(MEDIA_TREND);
 
-  if (loading)
+  useEffect(() => {
+    getMedia();
+  }, []);
+
+  if (loading) {
     return (
-      <View className='flex-1 justify-center items-center'>
-        <Text className='text-white'>Loading</Text>
-      </View>
-    );
-  if (error) {
-    console.log(error);
-    return (
-      <View className='flex-1 justify-center items-center'>
-        <Text className='text-white'>Error fetching data</Text>
-      </View>
+      <SafeAreaView className='flex-1'>
+        <View className='flex-1 justify-center items-center'>
+          <Text className='text-white'>Loading</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
-  let item = {
-    title: data.MediaTrend.media.title.userPreferred,
-    publisher:
-      data.MediaTrend.media.studios.nodes.length > 0
-        ? data.MediaTrend.media.studios.nodes[0].name
-        : 'Unknown',
-    ratings: Math.floor(data.MediaTrend.averageScore / 5),
-    nbUsers: data.MediaTrend.inProgress,
-    coverUri: data.MediaTrend.media.coverImage.extraLarge,
-  };
-
-  return (
-    <View
-      className='flex-1'
-      style={{
-        paddingTop: insets.top,
-      }}
-    >
-      <CollectionView
-        ListHeaderComponent={
-          <View>
-            <Text className='ml-4 text-md text-white font-regular my-4'>
-              New releases.
-            </Text>
-            <NewRelease
-              className='mx-4'
-              title={item.title}
-              publisher={item.publisher}
-              ratings={item.ratings}
-              nbUsers={item.nbUsers}
-              coverUri={item.coverUri}
-            />
+  if (error) {
+    console.log(error);
+    return (
+      <SafeAreaView className='flex-1'>
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+          }}
+          refreshControl={
+            <RefreshControl onRefresh={() => getMedia()} refreshing={loading} />
+          }
+        >
+          <View className='flex-1 justify-center items-center'>
+            <Text className='text-white'>Error fetching data</Text>
           </View>
-        }
-        sections={SECTIONS}
-        renderSectionHeader={({ section }) => {
-          return section.watching ? (
-            <Text className='ml-4 text-md text-white font-regular my-4'>
-              {section.title}
-            </Text>
-          ) : (
-            <View className='flex-row justify-between items-center w-3/4'>
-              <Text className='ml-4 text-md text-white font-bold my-4'>
-                • For you
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  if (data && data.MediaTrend) {
+    let item = {
+      title: data.MediaTrend.media.title.userPreferred,
+      publisher:
+        data.MediaTrend.media.studios.nodes.length > 0
+          ? data.MediaTrend.media.studios.nodes[0].name
+          : 'Unknown',
+      ratings: Math.floor(data.MediaTrend.averageScore / 5),
+      nbUsers: data.MediaTrend.inProgress,
+      coverUri: data.MediaTrend.media.coverImage.extraLarge,
+    };
+
+    return (
+      <SafeAreaView className='flex-1'>
+        <CollectionView
+          onRefresh={() => {
+            getMedia();
+          }}
+          refreshing={loading}
+          ListHeaderComponent={
+            <View>
+              <Text className='ml-4 text-md text-white font-regular my-4'>
+                New releases.
               </Text>
-              <Text className='ml-4 text-md text-neutral500 my-4'>Popular</Text>
-              <Text className='ml-4 text-md text-neutral500 my-4'>Popular</Text>
-              <Text className='ml-4 text-md text-neutral500 my-4'>Popular</Text>
+              <NewRelease
+                className='mx-4'
+                title={item.title}
+                publisher={item.publisher}
+                ratings={item.ratings}
+                nbUsers={item.nbUsers}
+                coverUri={item.coverUri}
+              />
             </View>
-          );
-        }}
-        renderElement={({ section, item }) => {
-          return section.watching ? (
-            <Watching
-              season={item.season}
-              title={item.title}
-              episode={item.episode}
-              progress={item.progress}
-              uri={item.uri}
-            />
-          ) : (
-            <Anime
-              className='mb-2'
-              uri={item.uri}
-              title={item.title}
-              year={item.year!}
-            />
-          );
-        }}
-      />
-    </View>
-  );
+          }
+          sections={SECTIONS}
+          renderSectionHeader={({ section }) => {
+            return section.watching ? (
+              <Text className='ml-4 text-md text-white font-regular my-4'>
+                {section.title}
+              </Text>
+            ) : (
+              <View className='flex-row justify-between items-center w-3/4'>
+                <Text className='ml-4 text-md text-white font-bold my-4'>
+                  • For you
+                </Text>
+                <Text className='ml-4 text-md text-neutral500 my-4'>
+                  Popular
+                </Text>
+                <Text className='ml-4 text-md text-neutral500 my-4'>
+                  Popular
+                </Text>
+                <Text className='ml-4 text-md text-neutral500 my-4'>
+                  Popular
+                </Text>
+              </View>
+            );
+          }}
+          renderElement={({ section, item }) => {
+            return section.watching ? (
+              <Watching
+                season={item.season}
+                title={item.title}
+                episode={item.episode}
+                progress={item.progress}
+                uri={item.uri}
+              />
+            ) : (
+              <Anime
+                className='mb-2'
+                uri={item.uri}
+                title={item.title}
+                year={item.year!}
+              />
+            );
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
 };
 
 export default Home;
