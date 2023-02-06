@@ -1,6 +1,6 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Text, View, ViewProps } from 'react-native';
+import { Blurhash } from 'react-native-blurhash';
 import Rating from './Rating';
 
 type Props = ViewProps & {
@@ -19,27 +19,43 @@ const NewRelease = ({
   coverUri,
   ...props
 }: Props) => {
+  const [blurhash, setBlurhash] = useState('');
+
+  useEffect(() => {
+    (async function () {
+      const hash = await Blurhash.encode(coverUri, 4, 3);
+      setBlurhash(hash);
+    })();
+  }, []);
+
   return (
-    <LinearGradient
-      {...props}
-      className='rounded-xl'
-      colors={['#7D4192', '#19A1BE']}
-    >
-      <View className='m-1'>
-        <Image
-          className='rounded-md overflow-hidden shadow-lg h-[187]'
-          resizeMode='repeat'
-          source={{ uri: coverUri }}
-        />
-        <View className='flex-row justify-between items-end mb-2'>
-          <View className='ml-2 wrap'>
-            <Text className='text-2xl text-white font-bold'>{title}</Text>
-            <Text className='text-xs text-white'>Studio: {publisher}</Text>
-          </View>
-          <Rating className='mr-2' count={ratings} nbUsers={nbUsers} />
+    <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
+      <Image
+        className='h-[187]'
+        resizeMode='cover'
+        source={{ uri: coverUri }}
+      />
+      <View className='absolute w-full h-full justify-end'>
+        <View className='flex-row justify-between items-end'>
+          {blurhash && (
+            <>
+              <Blurhash
+                resizeMode='cover'
+                className='absolute w-full h-full'
+                blurhash={blurhash}
+              />
+              <View className='ml-4 wrap mb-2'>
+                <Text className='text-2xl text-white w-[170] font-bold'>
+                  {title}
+                </Text>
+                <Text className='text-xs text-white'>Studio: {publisher}</Text>
+              </View>
+              <Rating className='mr-4 mb-2' count={ratings} nbUsers={nbUsers} />
+            </>
+          )}
         </View>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 

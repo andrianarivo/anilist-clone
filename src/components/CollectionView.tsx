@@ -6,6 +6,8 @@ import {
   SectionList,
   SectionListData,
   SectionListProps,
+  SectionListRenderItem,
+  View,
 } from 'react-native';
 import { useMediaQuery } from 'react-responsive';
 
@@ -20,18 +22,19 @@ type ElementInfo<ItemT> = {
   item: ItemT;
 };
 
+type CollectionRenderItem<ItemT> = (
+  info: ElementInfo<ItemT>
+) => React.ReactElement | null;
+
 type CollectionViewProps<ItemT> = SectionListProps<ItemT> & {
   sections: ReadonlyArray<SectionType<ItemT>>;
-  renderSectionHeader: (info: {
-    section: SectionListData<ItemT>;
-  }) => React.ReactElement | null;
-  renderElement: (info: ElementInfo<ItemT>) => React.ReactElement | null;
+  renderSectionHeader: SectionListRenderItem<ItemT>;
+  renderElement: CollectionRenderItem<ItemT>;
 };
 
 const renderSectionByType = <ItemT extends DefaultItemT>(
   section: SectionListData<ItemT>,
-  renderElement: (info: ElementInfo<ItemT>) => React.ReactElement | null,
-  colCount: number
+  renderElement: CollectionRenderItem<ItemT>
 ) => {
   switch (section.type) {
     case 'horizontal':
@@ -48,14 +51,12 @@ const renderSectionByType = <ItemT extends DefaultItemT>(
     case 'grid':
       return (
         <FlatList
-          className='self-center'
-          numColumns={colCount}
           keyExtractor={(item) => item.key}
           data={section.data}
           renderItem={({ item }) => {
             return renderElement({ section, item });
           }}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         />
       );
   }
@@ -67,11 +68,6 @@ const CollectionView = <ItemT extends DefaultItemT>({
   renderElement,
   ...props
 }: CollectionViewProps<ItemT>) => {
-  const isMediumScreen = useMediaQuery({
-    minDeviceWidth: 385,
-  });
-  const supportsMultipleCol = isMediumScreen && Platform.OS !== 'ios';
-  const colCount = supportsMultipleCol ? 3 : 2;
   return (
     <SectionList
       {...props}
@@ -84,7 +80,7 @@ const CollectionView = <ItemT extends DefaultItemT>({
             //TODO: separate in a TSX file
             renderSectionHeader?.({ section: section })
           }
-          {renderSectionByType(section, renderElement, colCount)}
+          {renderSectionByType(section, renderElement)}
         </>
       )}
       renderItem={() => {
