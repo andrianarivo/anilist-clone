@@ -32,103 +32,97 @@ interface Item {
   key: string;
 }
 
-const MEDIA_TREND = gql`
-  {
-    MediaTrend(popularity_greater: 100000) {
-      date
-      popularity
-      averageScore
-      media {
-        id
-        title {
-          userPreferred
-        }
-        bannerImage
-        studios(isMain: true) {
-          nodes {
-            id
-            name
-          }
-        }
-      }
-    }
-    Page(page: 0, perPage: 50) {
-      mediaList {
+const useLazyMostPopular = () => {
+  const QUERY = gql`
+    {
+      MediaTrend(popularity_greater: 100000) {
+        date
+        popularity
+        averageScore
         media {
           id
-          popularity
-          description
-          averageScore
-          episodes
           title {
             userPreferred
           }
-          coverImage {
-            extraLarge
-          }
-          startDate {
-            year
+          bannerImage
+          studios(isMain: true) {
+            nodes {
+              id
+              name
+            }
           }
         }
       }
     }
-  }
-`;
+  `;
+  return useLazyQuery(QUERY);
+};
 
-const WATCHING: ReadonlyArray<Item> = [
-  {
-    episode: '4',
-    title: 'Grappler Baki',
-    progress: 0.3,
-    season: '1',
-    key: '1',
-    uri: 'https://w0.peakpx.com/wallpaper/869/317/HD-wallpaper-baki-the-grappler-anime-baki-the-grappler-fight-manga-ufc.jpg',
-  },
-  {
-    episode: '2',
-    title: 'Item text 2',
-    progress: 0.6,
-    season: '1',
-    key: '2',
-    uri: 'https://picsum.photos/id/10/200',
-  },
+const useLazyAllMedia = () => {
+  const QUERY = gql`
+    {
+      Page(page: 0, perPage: 50) {
+        mediaList {
+          media {
+            id
+            popularity
+            description
+            averageScore
+            title {
+              userPreferred
+            }
+            coverImage {
+              extraLarge
+            }
+            startDate {
+              year
+            }
+          }
+        }
+      }
+    }
+  `;
+  return useLazyQuery(QUERY);
+};
 
-  {
-    episode: '3',
-    title: 'Item text 3',
-    progress: 0.1,
-    season: '1',
-    key: '3',
-    uri: 'https://picsum.photos/id/1002/200',
-  },
-  {
-    episode: '4',
-    title: 'Item text 4',
-    progress: 0.8,
-    season: '1',
-    key: '4',
-    uri: 'https://picsum.photos/id/1006/200',
-  },
-  {
-    episode: '5',
-    title: 'Item text 5',
-    progress: 0.5,
-    season: '1',
-    key: '5',
-    uri: 'https://picsum.photos/id/1008/200',
-  },
-];
+const useLazyWatching = () => {
+  const QUERY = gql`
+    {
+      Page(page: 0, perPage: 10) {
+        mediaList(status_in: [CURRENT, PAUSED]) {
+          progress
+          media {
+            title {
+              userPreferred
+            }
+            coverImage {
+              extraLarge
+            }
+            episodes
+          }
+        }
+      }
+    }
+  `;
+  return useLazyQuery(QUERY);
+};
 
 const Home = () => {
   const insets = useSafeAreaInsets();
-  const [getData, { loading, error, data }] = useLazyQuery(MEDIA_TREND);
+  const [getMostPopular, mostPopular] = useLazyMostPopular();
+  const [getAllMedia, allMedia] = useLazyAllMedia();
+  const [getWatching, watching] = useLazyWatching();
 
   useEffect(() => {
-    getData();
+    getMostPopular();
+    getAllMedia();
+    getWatching();
   }, []);
 
-  if (error) {
-    console.log(error);
+  if (mostPopular.error && allMedia.error && watching.error) {
+    console.log(mostPopular.error);
+    console.log(allMedia.error);
+    console.log(watching.error);
     return (
       <SafeAreaView className='flex-1'>
         <ScrollView
@@ -136,7 +130,16 @@ const Home = () => {
             flex: 1,
           }}
           refreshControl={
-            <RefreshControl onRefresh={() => getData()} refreshing={loading} />
+            <RefreshControl
+              onRefresh={() => {
+                getMostPopular();
+                getAllMedia();
+                getWatching();
+              }}
+              refreshing={
+                mostPopular.loading && allMedia.loading && watching.loading
+              }
+            />
           }
         >
           <View className='flex-1 justify-center items-center'>
@@ -147,29 +150,48 @@ const Home = () => {
     );
   }
 
-  if (data && data.MediaTrend && data.Page) {
-    let item = {
-      title: data.MediaTrend.media.title.userPreferred,
+  if (
+    mostPopular.data &&
+    mostPopular.data.MediaTrend &&
+    allMedia.data &&
+    allMedia.data.Page &&
+    watching.data &&
+    watching.data.Page
+  ) {
+    let bannerItem = {
+      title: mostPopular.data.MediaTrend.media.title.userPreferred,
       publisher:
-        data.MediaTrend.media.studios.nodes.length > 0
-          ? data.MediaTrend.media.studios.nodes[0].name
+        mostPopular.data.MediaTrend.media.studios.nodes.length > 0
+          ? mostPopular.data.MediaTrend.media.studios.nodes[0].name
           : 'Unknown',
-      ratings: data.MediaTrend.averageScore,
-      nbUsers: data.MediaTrend.popularity,
-      coverUri: data.MediaTrend.media.bannerImage,
+      ratings: mostPopular.data.MediaTrend.averageScore,
+      nbUsers: mostPopular.data.MediaTrend.popularity,
+      coverUri: mostPopular.data.MediaTrend.media.bannerImage,
     };
 
-    let medias = data.Page.mediaList.map(
-      (item: typeof data.Page.medialist[0]) => {
+    let ALL_MEDIAS = allMedia.data.Page.mediaList.map(
+      (item: typeof allMedia.data.Page.medialist[0]) => {
         let media: Item = {
           key: item.media.id,
           nbUsers: item.media.popularity,
-          episode: item.media.episodes,
           description: item.media.description,
           rating: item.media.averageScore,
           title: item.media.title.userPreferred,
           uri: item.media.coverImage.extraLarge,
           year: item.media.startDate.year,
+        };
+        return media;
+      }
+    );
+
+    let WATCHING = watching.data.Page.mediaList.map(
+      (item: typeof watching.data.Page.mediaList[0]) => {
+        let media: Item = {
+          key: item.media.id,
+          title: item.media.title.userPreferred,
+          uri: item.media.coverImage.extraLarge,
+          episode: item.progress,
+          progress: item.progress / item.media.episodes,
         };
         return media;
       }
@@ -186,7 +208,7 @@ const Home = () => {
         title: 'All',
         watching: false,
         type: 'grid',
-        data: medias,
+        data: ALL_MEDIAS,
       },
     ];
 
@@ -196,9 +218,11 @@ const Home = () => {
           paddingTop: insets.top,
         }}
         onRefresh={() => {
-          getData();
+          getMostPopular();
+          getAllMedia();
+          getWatching();
         }}
-        refreshing={loading}
+        refreshing={allMedia.loading && mostPopular.loading}
         ListHeaderComponent={
           <View>
             <Text className='ml-4 text-md text-white font-regular my-4'>
@@ -206,11 +230,11 @@ const Home = () => {
             </Text>
             <NewRelease
               className='mx-4'
-              title={item.title}
-              publisher={item.publisher}
-              ratings={item.ratings}
-              nbUsers={item.nbUsers}
-              coverUri={item.coverUri}
+              title={bannerItem.title}
+              publisher={bannerItem.publisher}
+              ratings={bannerItem.ratings}
+              nbUsers={bannerItem.nbUsers}
+              coverUri={bannerItem.coverUri}
             />
           </View>
         }

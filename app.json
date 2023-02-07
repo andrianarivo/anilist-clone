@@ -33,6 +33,17 @@
       "eas": {
         "projectId": "6da9182a-8ea9-4d8a-aebd-97db36575622"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }"
+          }
+        }
+      ]
+    ]
   }
 }

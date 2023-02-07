@@ -10,14 +10,7 @@ type Props = ViewProps & {
   season?: string;
   uri: string;
 };
-const Watching = ({
-  title,
-  episode,
-  progress,
-  uri,
-  season,
-  ...props
-}: Props) => {
+const Watching = ({ title, episode, progress, uri, ...props }: Props) => {
   return (
     <View {...props} className='mx-2'>
       <View className='overflow-hidden rounded-lg shadow-lg w-[162] h-[124]'>
@@ -39,9 +32,7 @@ const Watching = ({
       >
         <Text className='font-bold text-md text-white'>{title}</Text>
         {episode && (
-          <Text className='font-sm text-neutral500'>
-            S.{season} Ep. {episode}
-          </Text>
+          <Text className='font-sm text-neutral500'>Episode {episode}</Text>
         )}
       </View>
     </View>
