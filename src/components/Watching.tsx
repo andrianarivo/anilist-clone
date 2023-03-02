@@ -30,7 +30,13 @@ const Watching = ({ title, episode, progress, uri, ...props }: Props) => {
           alignItems: episode ? 'flex-start' : 'center',
         }}
       >
-        <Text className='font-bold text-md text-white'>{title}</Text>
+        <Text
+          ellipsizeMode='tail'
+          numberOfLines={1}
+          className='font-bold text-md text-white w-[162]'
+        >
+          {title}
+        </Text>
         {episode && (
           <Text className='font-sm text-neutral500'>Episode {episode}</Text>
         )}

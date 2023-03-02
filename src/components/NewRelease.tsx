@@ -28,6 +28,7 @@ const NewRelease = ({
     })();
   }, []);
 
+
   return (
     <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
       <Image
@@ -45,7 +46,11 @@ const NewRelease = ({
                 blurhash={blurhash}
               />
               <View className='ml-4 wrap mb-2'>
-                <Text className='text-2xl text-white w-[170] font-bold'>
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode='tail'
+                  className='text-2xl text-white max-w-[70%] font-bold'
+                >
                   {title}
                 </Text>
                 <Text className='text-xs text-white'>Studio: {publisher}</Text>
