@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View, ViewProps } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Blurhash } from 'react-native-blurhash';
+import { SharedElement } from 'react-navigation-shared-element';
 import Rating from './Rating';
 
 type Props = ViewProps & {
@@ -9,6 +10,7 @@ type Props = ViewProps & {
   ratings: number;
   nbUsers: number;
   coverUri: string;
+  navigation: any;
 };
 
 const NewRelease = ({
@@ -17,6 +19,7 @@ const NewRelease = ({
   ratings,
   nbUsers,
   coverUri,
+  navigation,
   ...props
 }: Props) => {
   const [blurhash, setBlurhash] = useState('');
@@ -28,14 +31,18 @@ const NewRelease = ({
     })();
   }, []);
 
-
   return (
     <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
-      <Image
-        className='h-[187]'
-        resizeMode='cover'
-        source={{ uri: coverUri }}
-      />
+      <TouchableOpacity onPress={() => navigation.push('AnimeDetails')}>
+        <SharedElement id={'photo'}>
+          <Image
+            className='h-[187]'
+            resizeMode='cover'
+            source={{ uri: coverUri }}
+          />
+        </SharedElement>
+      </TouchableOpacity>
+
       <View className='absolute w-full h-full justify-end'>
         <View className='flex-row justify-between items-end'>
           {blurhash && (

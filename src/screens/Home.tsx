@@ -107,7 +107,11 @@ const useLazyWatching = () => {
   return useLazyQuery(QUERY);
 };
 
-const Home = () => {
+type HomeProps = {
+  navigation: any;
+};
+
+const Home = ({ navigation }: HomeProps) => {
   const insets = useSafeAreaInsets();
   const [getMostPopular, mostPopular] = useLazyMostPopular();
   const [getAllMedia, allMedia] = useLazyAllMedia();
@@ -235,6 +239,7 @@ const Home = () => {
               ratings={bannerItem.ratings}
               nbUsers={bannerItem.nbUsers}
               coverUri={bannerItem.coverUri}
+              navigation={navigation}
             />
           </View>
         }

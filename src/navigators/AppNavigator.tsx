@@ -1,5 +1,6 @@
 import ProfileBarButton from '@components/ProfileTabButton';
 import '@expo/match-media';
+import HomeNavigator from '@navigators/HomeNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   DefaultTheme,
@@ -8,7 +9,6 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import Downloads from '@screens/Downloads';
-import Home from '@screens/Home';
 import Library from '@screens/Library';
 import Profile from '@screens/Profile';
 import Videos from '@screens/Videos';
@@ -83,7 +83,7 @@ const AppNavigator = (props: NavigatorProps) => {
           },
         })}
       >
-        <Tab.Screen name='Home' component={Home} />
+        <Tab.Screen name='Home' component={HomeNavigator} />
         <Tab.Screen name='Videos' component={Videos} />
         <Tab.Screen
           name='Profile'
