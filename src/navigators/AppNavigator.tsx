@@ -1,3 +1,4 @@
+import useTabBarStyle from '@/hooks/useTabBarStyle';
 import ProfileBarButton from '@components/ProfileTabButton';
 import '@expo/match-media';
 import HomeNavigator from '@navigators/HomeNavigator';
@@ -22,7 +23,7 @@ const renderTabBarIcon = (route: RouteProp<ParamListBase, string>) => {
   let icon;
 
   switch (route.name) {
-    case 'Home':
+    case 'HomeNavigator':
       icon = require('assets/icons/home.png');
       break;
     case 'Videos':
@@ -58,9 +59,7 @@ interface NavigatorProps {
 }
 
 const AppNavigator = (props: NavigatorProps) => {
-  const isMediumScreen = useMediaQuery({
-    minDeviceHeight: 830,
-  });
+  const tabBarStyle = useTabBarStyle();
   return (
     <NavigationContainer
       theme={NavigationTheme}
@@ -74,16 +73,13 @@ const AppNavigator = (props: NavigatorProps) => {
           tabBarIcon: () => {
             return renderTabBarIcon(route);
           },
-          tabBarStyle: {
-            borderTopWidth: 0,
-            height: isMediumScreen && Platform.OS === 'ios' ? 75 : 55,
-          },
+          tabBarStyle: tabBarStyle,
           tabBarBackground: () => {
             return <View className='grow bg-deep-dark' />;
           },
         })}
       >
-        <Tab.Screen name='Home' component={HomeNavigator} />
+        <Tab.Screen name='HomeNavigator' component={HomeNavigator} />
         <Tab.Screen name='Videos' component={Videos} />
         <Tab.Screen
           name='Profile'
