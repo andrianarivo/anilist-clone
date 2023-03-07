@@ -25,7 +25,7 @@ const ProfileBarButton = ({ children, onPress }: ProfileBarProps) => {
             right: Platform.OS === 'android' ? -23 : -24,
           }}
           resizeMode='cover'
-          source={require('assets/icons/profile_bg.png')}
+          source={require('assets/images/profile_bg.png')}
         >
           {children}
         </ImageBackground>

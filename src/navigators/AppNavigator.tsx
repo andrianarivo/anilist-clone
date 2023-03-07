@@ -30,7 +30,7 @@ const renderTabBarIcon = (route: RouteProp<ParamListBase, string>) => {
       icon = require('assets/icons/videos.png');
       break;
     case 'Profile':
-      icon = require('assets/icons/profile_bg.png');
+      icon = require('assets/images/profile_bg.png');
       break;
     case 'Library':
       icon = require('assets/icons/library.png');
