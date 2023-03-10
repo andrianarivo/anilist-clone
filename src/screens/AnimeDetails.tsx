@@ -4,16 +4,43 @@ import {
 } from '@/components/Character';
 import useTabBarStyle from '@/hooks/useTabBarStyle';
 import Star from '@/svg/Star';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useLayoutEffect } from 'react';
-import { Button, Image, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewProps,
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SharedElement } from 'react-navigation-shared-element';
 
-const AnimeDetails = () => {
+type RootStackParamList = {
+  Home: undefined;
+  AnimeDetails: { anime: { mediaId: string; imgSource: string } };
+};
+
+type AnimeDetailsRouteProp = RouteProp<RootStackParamList, 'AnimeDetails'>;
+type AnimeDetailsScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'AnimeDetails'
+>;
+
+type AnimeDetailsProps = ViewProps &
+  AnimeDetailsRouteProp & {
+    route: AnimeDetailsProps;
+    navigation: AnimeDetailsScreenNavigationProp;
+  };
+
+const AnimeDetails = ({ route, ...props }: AnimeDetailsProps) => {
   const navigation = useNavigation();
   const tabBarStyle = useTabBarStyle();
+  const { anime } = route.params;
+  const { mediaId, imgSource } = anime;
 
   useEffect(() => {
     navigation
@@ -26,18 +53,18 @@ const AnimeDetails = () => {
   }, [navigation]);
 
   return (
-    <View className='flex-1'>
+    <View {...props} className='flex-1'>
       <FlatList
         ListHeaderComponent={() => {
           return (
             <View>
               <View className='relative'>
-                <SharedElement id={'photo'}>
+                <SharedElement id={`image_${mediaId}`}>
                   <Image
                     className='h-[374]'
                     resizeMode='cover'
                     source={{
-                      uri: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/16498-8jpFCOcDmneX.jpg',
+                      uri: imgSource,
                     }}
                   />
                 </SharedElement>

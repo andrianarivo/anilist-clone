@@ -47,7 +47,6 @@ const useLazyMostPopular = () => {
           bannerImage
           studios(isMain: true) {
             nodes {
-              id
               name
             }
           }
@@ -163,6 +162,7 @@ const Home = ({ navigation }: HomeProps) => {
     watching.data.Page
   ) {
     let bannerItem = {
+      mediaId: mostPopular.data.MediaTrend.media.id,
       title: mostPopular.data.MediaTrend.media.title.userPreferred,
       publisher:
         mostPopular.data.MediaTrend.media.studios.nodes.length > 0
@@ -234,6 +234,7 @@ const Home = ({ navigation }: HomeProps) => {
             </Text>
             <NewRelease
               className='mx-4'
+              mediaId={bannerItem.mediaId}
               title={bannerItem.title}
               publisher={bannerItem.publisher}
               ratings={bannerItem.ratings}

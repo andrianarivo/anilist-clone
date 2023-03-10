@@ -18,8 +18,8 @@ const HomeNavigator = () => {
       <Stack.Screen
         name='AnimeDetails'
         component={AnimeDetails}
-        sharedElements={() => {
-          return ['photo'];
+        sharedElements={(route) => {
+          return [`image_${route.params.anime.mediaId}`];
         }}
       />
     </Stack.Navigator>

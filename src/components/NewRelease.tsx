@@ -5,6 +5,7 @@ import { SharedElement } from 'react-navigation-shared-element';
 import Rating from './Rating';
 
 type Props = ViewProps & {
+  mediaId: string;
   title: string;
   publisher: string;
   ratings: number;
@@ -14,6 +15,7 @@ type Props = ViewProps & {
 };
 
 const NewRelease = ({
+  mediaId,
   title,
   publisher,
   ratings,
@@ -24,6 +26,11 @@ const NewRelease = ({
 }: Props) => {
   const [blurhash, setBlurhash] = useState('');
 
+  const anime = {
+    mediaId: mediaId,
+    imgSource: coverUri,
+  };
+
   useEffect(() => {
     (async function () {
       const hash = await Blurhash.encode(coverUri, 4, 3);
@@ -33,8 +40,10 @@ const NewRelease = ({
 
   return (
     <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
-      <TouchableOpacity onPress={() => navigation.push('AnimeDetails')}>
-        <SharedElement id={'photo'}>
+      <TouchableOpacity
+        onPress={() => navigation.push('AnimeDetails', { anime })}
+      >
+        <SharedElement id={`image_${mediaId}`}>
           <Image
             className='h-[187]'
             resizeMode='cover'
