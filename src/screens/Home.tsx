@@ -275,6 +275,8 @@ const Home = ({ navigation }: HomeProps) => {
             />
           ) : (
             <Anime
+              mediaId={item.key}
+              navigation={navigation}
               nbUsers={item.nbUsers!}
               description={item.description!}
               ratings={item.rating!}
