@@ -88,9 +88,10 @@ const useLazyWatching = () => {
   const QUERY = gql`
     {
       Page(page: 0, perPage: 10) {
-        mediaList(status_in: [CURRENT, PAUSED]) {
+        mediaList(status_in: [PAUSED]) {
           progress
           media {
+            id
             title {
               userPreferred
             }
@@ -173,7 +174,7 @@ const Home = ({ navigation }: HomeProps) => {
       coverUri: mostPopular.data.MediaTrend.media.bannerImage,
     };
 
-    let ALL_MEDIAS = allMedia.data.Page.mediaList.map(
+    const ALL_MEDIAS = allMedia.data.Page.mediaList.map(
       (item: typeof allMedia.data.Page.medialist[0]) => {
         let media: Item = {
           key: item.media.id,
@@ -188,7 +189,7 @@ const Home = ({ navigation }: HomeProps) => {
       }
     );
 
-    let WATCHING = watching.data.Page.mediaList.map(
+    const WATCHING = watching.data.Page.mediaList.map(
       (item: typeof watching.data.Page.mediaList[0]) => {
         let media: Item = {
           key: item.media.id,
@@ -264,6 +265,8 @@ const Home = ({ navigation }: HomeProps) => {
         renderElement={({ section, item }) => {
           return section.watching ? (
             <Watching
+              mediaId={item.key}
+              navigation={navigation}
               season={item.season}
               title={item.title}
               episode={item.episode}

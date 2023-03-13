@@ -1,20 +1,26 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, ViewProps } from 'react-native';
 
-const Character = () => {
+type CharacterProps = ViewProps & {
+  name: string;
+  gender: string;
+  imageUri: string;
+};
+
+const Character = ({ name, gender, imageUri, ...props }: CharacterProps) => {
   return (
-    <View className='flex-row max-w-[190] items-center'>
+    <View {...props} className='flex-row w-[180] items-center'>
       <LinearGradient
         className='w-16 h-16 rounded-full z-20'
         colors={['#19A1BE', '#7D4192']}
       >
         <Image
           className='w-[60] h-[60] top-[2] left-[2] rounded-full'
-          source={require('assets/images/movie1.png')}
+          source={{ uri: imageUri }}
         />
       </LinearGradient>
-      <View className='left-[-40] z-10 h-[54] max-w-[165] '>
+      <View className='left-[-40] z-10 h-[54] w-[150] '>
         <LinearGradient
           className='p-[1] rounded-2xl'
           colors={['#1e1e22', '#978F8A']}
@@ -28,14 +34,14 @@ const Character = () => {
               ellipsizeMode='tail'
               className='text-white text-base font-bold'
             >
-              Eren Yeager
+              {name}
             </Text>
             <Text
               numberOfLines={1}
               ellipsizeMode='tail'
               className='text-white text-sm font-regular'
             >
-              As Morbius
+              {gender}
             </Text>
           </View>
         </LinearGradient>
