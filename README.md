@@ -160,6 +160,7 @@ If you like this project, consider adding a ⭐️
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
 I would like to thank Anilist for the GraphQL server.
+I would like to thank Figma and the original designer for the design.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
