@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.narivo.anilistgraphql"
@@ -40,10 +42,15 @@
         {
           "android": {
             "enableProguardInReleaseBuilds": true,
-            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }"
+            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }",
+            "newArchEnabled": true
+          },
+          "ios": {
+            "newArchEnabled": true
           }
         }
       ]
-    ]
+    ],
+    "newArchEnabled": true
   }
 }
