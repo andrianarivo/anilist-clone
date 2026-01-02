@@ -3,12 +3,13 @@ import React from 'react';
 import { Image, Text, View, ViewProps } from 'react-native';
 
 type CharacterProps = ViewProps & {
+  id?: string;
   name: string;
   gender: string;
   imageUri: string;
 };
 
-const Character = ({ name, gender, imageUri, ...props }: CharacterProps) => {
+const Character = ({ id, name, gender, imageUri, ...props }: CharacterProps) => {
   return (
     <View {...props} className='flex-row w-[180] items-center'>
       <LinearGradient
@@ -24,8 +25,8 @@ const Character = ({ name, gender, imageUri, ...props }: CharacterProps) => {
         <LinearGradient
           className='p-[1] rounded-2xl'
           colors={['#1e1e22', '#978F8A']}
-          start={[0, 1]}
-          end={[1, 0]}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1, y: 0 }}
           style={{ flex: 1 }}
         >
           <View className='flex-1 pl-[50] pr-[20] bg-black rounded-2xl justify-center'>

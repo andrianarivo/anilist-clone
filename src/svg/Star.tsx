@@ -2,14 +2,14 @@ import React from 'react';
 import Svg, { Path, SvgProps } from 'react-native-svg';
 
 const defaults: SvgProps = {
-  width: 14,
-  height: 13,
+  width: "14",
+  height: "13",
 };
 const Star = (props: SvgProps = defaults) => {
   return (
     <Svg
-      width={props.width}
-      height={props.height}
+      width={props.width?.toString()}
+      height={props.height?.toString()}
       viewBox='0 0 14 13'
       fill='none'
       {...props}

@@ -184,12 +184,13 @@ const AnimeDetails = ({ route, ...props }: AnimeDetailsProps) => {
                   </View>
                   <View>
                     <View className='flex-row-reverse'>
-                      {animeDetailsData.score.map(() => {
+                      {animeDetailsData.score.map((_, index) => {
                         return (
                           <Star
+                            key={index}
                             className='mx-[2] my-[5]'
-                            width={14}
-                            height={13}
+                            width="14"
+                            height="13"
                           />
                         );
                       })}
