@@ -2,6 +2,7 @@ import AppNavigator from '@navigators/AppNavigator';
 import * as NavigationBar from 'expo-navigation-bar';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { colors } from './theme/colors';
 
@@ -15,9 +16,11 @@ interface AppProps {
 
 export default function App(props: AppProps) {
   return (
-    <SafeAreaProvider>
-      <AppNavigator onLayoutRootView={props.onLayoutRootView} />
-      <StatusBar style={'light'} backgroundColor='#18181b' />
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <AppNavigator onLayoutRootView={props.onLayoutRootView} />
+        <StatusBar style={'light'} backgroundColor='#18181b' />
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
