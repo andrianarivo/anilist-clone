@@ -60,7 +60,7 @@ const useLazyMostPopular = () => {
 const useLazyAllMedia = () => {
   const QUERY = gql`
     {
-      Page(page: 0, perPage: 50) {
+      Page(page: 1, perPage: 50) {
         mediaList {
           media {
             id
@@ -87,7 +87,7 @@ const useLazyAllMedia = () => {
 const useLazyWatching = () => {
   const QUERY = gql`
     {
-      Page(page: 0, perPage: 10) {
+      Page(page: 1, perPage: 10) {
         mediaList(status_in: [PAUSED]) {
           progress
           media {
@@ -124,10 +124,17 @@ const Home = ({ navigation }: HomeProps) => {
     getWatching();
   }, []);
 
-  if (mostPopular.error && allMedia.error && watching.error) {
-    console.log(mostPopular.error);
-    console.log(allMedia.error);
-    console.log(watching.error);
+  // Log errors individually for easier debugging
+  useEffect(() => {
+    if (mostPopular.error) console.error('Most Popular Query Error:', mostPopular.error);
+    if (allMedia.error) console.error('All Media Query Error:', allMedia.error);
+    if (watching.error) console.error('Watching Query Error:', watching.error);
+  }, [mostPopular.error, allMedia.error, watching.error]);
+
+  const isLoading = mostPopular.loading || allMedia.loading || watching.loading;
+  const hasEssentialData = mostPopular.data?.MediaTrend && allMedia.data?.Page;
+
+  if (!hasEssentialData && !isLoading) {
     return (
       <SafeAreaView className='flex-1'>
         <ScrollView
@@ -141,29 +148,24 @@ const Home = ({ navigation }: HomeProps) => {
                 getAllMedia();
                 getWatching();
               }}
-              refreshing={
-                mostPopular.loading && allMedia.loading && watching.loading
-              }
+              refreshing={isLoading}
             />
           }
         >
           <View className='flex-1 justify-center items-center'>
-            <Text className='text-white'>Error fetching data</Text>
+            <Text className='text-white text-center px-4'>
+              {mostPopular.error || allMedia.error
+                ? 'Error fetching essential data. Please pull down to refresh.'
+                : 'No data found.'}
+            </Text>
           </View>
         </ScrollView>
       </SafeAreaView>
     );
   }
 
-  if (
-    mostPopular.data &&
-    mostPopular.data.MediaTrend &&
-    allMedia.data &&
-    allMedia.data.Page &&
-    watching.data &&
-    watching.data.Page
-  ) {
-    let bannerItem = {
+  if (hasEssentialData) {
+    const bannerItem = {
       mediaId: mostPopular.data.MediaTrend.media.id,
       title: mostPopular.data.MediaTrend.media.title.userPreferred,
       publisher:
@@ -175,8 +177,8 @@ const Home = ({ navigation }: HomeProps) => {
       coverUri: mostPopular.data.MediaTrend.media.bannerImage,
     };
 
-    const ALL_MEDIAS = allMedia.data.Page.mediaList.map(
-      (item: typeof allMedia.data.Page.medialist[0]) => {
+    const ALL_MEDIAS = (allMedia.data.Page.mediaList || []).map(
+      (item: any) => {
         let media: Item = {
           key: item.media.id,
           nbUsers: item.media.popularity,
@@ -190,30 +192,30 @@ const Home = ({ navigation }: HomeProps) => {
       }
     );
 
-    const WATCHING = watching.data.Page.mediaList.map(
-      (item: typeof watching.data.Page.mediaList[0]) => {
+    const WATCHING = (watching.data?.Page?.mediaList || []).map(
+      (item: any) => {
         let media: Item = {
           key: item.media.id,
           title: item.media.title.userPreferred,
           uri: item.media.coverImage.extraLarge,
           episode: item.progress,
-          progress: item.progress / item.media.episodes,
+          progress: item.media.episodes ? item.progress / item.media.episodes : 0,
         };
         return media;
       }
     );
 
     const SECTIONS: ReadonlyArray<SectionData> = [
-      {
+      ...(WATCHING.length > 0 ? [{
         title: 'Continue watching',
         watching: true,
-        type: 'horizontal',
+        type: 'horizontal' as CollectionType,
         data: WATCHING,
-      },
+      }] : []),
       {
         title: 'All',
         watching: false,
-        type: 'grid',
+        type: 'grid' as CollectionType,
         data: ALL_MEDIAS,
       },
     ];
@@ -228,7 +230,7 @@ const Home = ({ navigation }: HomeProps) => {
           getAllMedia();
           getWatching();
         }}
-        refreshing={allMedia.loading && mostPopular.loading}
+        refreshing={isLoading}
         ListHeaderComponent={
           <View>
             <Text className='ml-4 text-md text-white font-regular my-4'>
