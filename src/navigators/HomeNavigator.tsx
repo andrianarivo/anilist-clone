@@ -1,12 +1,14 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AnimeDetails from '@screens/AnimeDetails';
 import Home from '@screens/Home';
 import React from 'react';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
-const Stack = createSharedElementStackNavigator({
-  name: 'home-navigation-stack',
-});
+export type RootStackParamList = {
+  Home: undefined;
+  AnimeDetails: { anime: { mediaId: string; imgSource: string } };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeNavigator = () => {
   return (
@@ -15,13 +17,7 @@ const HomeNavigator = () => {
       initialRouteName='Home'
     >
       <Stack.Screen name='Home' component={Home} />
-      <Stack.Screen
-        name='AnimeDetails'
-        component={AnimeDetails}
-        sharedElements={(route) => {
-          return [`image_${route.params.anime.mediaId}`];
-        }}
-      />
+      <Stack.Screen name='AnimeDetails' component={AnimeDetails} />
     </Stack.Navigator>
   );
 };

@@ -1,8 +1,11 @@
 import { colors } from '@theme/colors';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View, ViewProps } from 'react-native';
+import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { SharedElement } from 'react-navigation-shared-element';
+import Animated from 'react-native-reanimated';
+
+import type { RootStackParamList } from '@/navigators/HomeNavigator';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Props = ViewProps & {
   mediaId: string;
@@ -11,7 +14,7 @@ type Props = ViewProps & {
   progress?: number;
   season?: string;
   uri: string;
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 const Watching = ({
   mediaId,
@@ -33,13 +36,12 @@ const Watching = ({
         onPress={() => navigation.push('AnimeDetails', { anime })}
       >
         <View className='overflow-hidden rounded-lg shadow-lg w-[162] h-[124]'>
-          <SharedElement id={`image_${mediaId}`}>
-            <Image
-              resizeMode='cover'
-              className='w-full h-full'
-              source={{ uri: uri }}
-            />
-          </SharedElement>
+          <Animated.Image
+            sharedTransitionTag={`image_${mediaId}`}
+            resizeMode='cover'
+            className='w-full h-full'
+            source={{ uri: uri }}
+          />
           <Progress.Bar
             className='absolute top-[122] w-full'
             borderWidth={0}

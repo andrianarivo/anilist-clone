@@ -107,9 +107,10 @@ const useLazyWatching = () => {
   return useLazyQuery(QUERY);
 };
 
-type HomeProps = {
-  navigation: any;
-};
+import type { RootStackParamList } from '@/navigators/HomeNavigator';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const Home = ({ navigation }: HomeProps) => {
   const insets = useSafeAreaInsets();

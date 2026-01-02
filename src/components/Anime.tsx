@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ViewProps } from 'react-native';
-import { SharedElement } from 'react-navigation-shared-element';
+import React, { useEffect } from 'react';
+import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
+import Animated from 'react-native-reanimated';
 import Rating from './Rating';
+
+import type { RootStackParamList } from '@/navigators/HomeNavigator';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Props = ViewProps & {
   uri: string;
@@ -11,7 +14,7 @@ type Props = ViewProps & {
   nbUsers: number;
   title: string;
   year: number;
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 
 const Anime = ({
@@ -25,7 +28,7 @@ const Anime = ({
   navigation,
   ...props
 }: Props) => {
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const anime = {
     mediaId: mediaId,
@@ -41,9 +44,11 @@ const Anime = ({
         className='m-2 bg-deep-dark p-4 rounded-lg overflow-hidden flex-row items-center'
       >
         <View className='overflow-hidden rounded-2xl mr-2 shadow-lg w-[124] h-[194]'>
-          <SharedElement id={`image_${anime.mediaId}`}>
-            <Image className='w-full h-full' source={{ uri: uri }} />
-          </SharedElement>
+          <Animated.Image
+            sharedTransitionTag={`image_${anime.mediaId}`}
+            className='w-full h-full'
+            source={{ uri: uri }}
+          />
         </View>
         <View className='flex-1 flex-grow'>
           <Text className='font-bold text-md text-white flex-wrap'>

@@ -1,19 +1,16 @@
 import {
   default as Character,
-  default as VoiceOver,
 } from '@/components/Character';
 import useTabBarStyle from '@/hooks/useTabBarStyle';
 import Star from '@/svg/Star';
 import { gql, useLazyQuery } from '@apollo/client';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useWindowDimensions } from 'react-native';
 
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Button,
-  Image,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -24,24 +21,15 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import HTML from 'react-native-render-html';
-import { SharedElement } from 'react-navigation-shared-element';
+import Animated from 'react-native-reanimated';
 
-type RootStackParamList = {
-  Home: undefined;
-  AnimeDetails: { anime: { mediaId: string; imgSource: string } };
-};
+import type { RootStackParamList } from '@/navigators/HomeNavigator';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type AnimeDetailsRouteProp = RouteProp<RootStackParamList, 'AnimeDetails'>;
-type AnimeDetailsScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'AnimeDetails'
->;
+type AnimeDetailsProps = NativeStackScreenProps<RootStackParamList, 'AnimeDetails'>;
 
-type AnimeDetailsProps = ViewProps &
-  AnimeDetailsRouteProp & {
-    route: AnimeDetailsProps;
-    navigation: AnimeDetailsScreenNavigationProp;
-  };
+type AnimeDetailsRouteProp = AnimeDetailsProps['route'];
+type AnimeDetailsScreenNavigationProp = AnimeDetailsProps['navigation'];
 
 type AnimeCharacter = {
   id: string;
@@ -161,15 +149,14 @@ const AnimeDetails = ({ route, ...props }: AnimeDetailsProps) => {
             return (
               <View>
                 <View className='relative'>
-                  <SharedElement id={`image_${mediaId}`}>
-                    <Image
-                      className='h-[374]'
-                      resizeMode='cover'
-                      source={{
-                        uri: imgSource,
-                      }}
-                    />
-                  </SharedElement>
+                  <Animated.Image
+                    sharedTransitionTag={`image_${mediaId}`}
+                    className='h-[374]'
+                    resizeMode='cover'
+                    source={{
+                      uri: imgSource,
+                    }}
+                  />
                   <LinearGradient
                     className='w-full h-20 absolute bottom-0 left-0'
                     colors={['transparent', '#1e1e22']}
@@ -256,7 +243,7 @@ const AnimeDetails = ({ route, ...props }: AnimeDetailsProps) => {
                     style={{ flex: 1 }}
                   >
                     <View className='flex-1 relative bg-neutral800 rounded-full justify-center align-center'>
-                      <Image
+                      <Animated.Image
                         className='absolute left-[-25%]'
                         source={require('assets/images/button_bg.png')}
                       />
@@ -282,15 +269,14 @@ const AnimeDetails = ({ route, ...props }: AnimeDetailsProps) => {
 
   return (
     <SafeAreaView className='flex-1'>
-      <SharedElement id={`image_${mediaId}`}>
-        <Image
-          className='h-[374]'
-          resizeMode='cover'
-          source={{
-            uri: imgSource,
-          }}
-        />
-      </SharedElement>
+      <Animated.Image
+        sharedTransitionTag={`image_${mediaId}`}
+        className='h-[374]'
+        resizeMode='cover'
+        source={{
+          uri: imgSource,
+        }}
+      />
       <View className='flex-1 justify-center items-center'>
         <Text className='text-white'>Loading</Text>
       </View>

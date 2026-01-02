@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ViewProps } from 'react-native';
+import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Blurhash } from 'react-native-blurhash';
-import { SharedElement } from 'react-navigation-shared-element';
+import Animated from 'react-native-reanimated';
 import Rating from './Rating';
+
+import type { RootStackParamList } from '@/navigators/HomeNavigator';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Props = ViewProps & {
   mediaId: string;
@@ -11,7 +14,7 @@ type Props = ViewProps & {
   ratings: number;
   nbUsers: number;
   coverUri: string;
-  navigation: any;
+  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 
 const NewRelease = ({
@@ -43,13 +46,12 @@ const NewRelease = ({
       <TouchableOpacity
         onPress={() => navigation.push('AnimeDetails', { anime })}
       >
-        <SharedElement id={`image_${mediaId}`}>
-          <Image
-            className='h-[187]'
-            resizeMode='cover'
-            source={{ uri: coverUri }}
-          />
-        </SharedElement>
+        <Animated.Image
+          sharedTransitionTag={`image_${mediaId}`}
+          className='h-[187]'
+          resizeMode='cover'
+          source={{ uri: coverUri }}
+        />
       </TouchableOpacity>
 
       <View className='absolute w-full h-full justify-end'>
