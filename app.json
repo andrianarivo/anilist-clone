@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "anilist-graphql",
-    "slug": "anilist-graphql",
+    "name": "My Anime List",
+    "slug": "my-anime-list",
+    "scheme": "anilist-clone",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,14 +20,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.narivo.anilistgraphql"
+      "bundleIdentifier": "com.believerbuddy.myanimelist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.narivo.anilistgraphql"
+      "package": "com.believerbuddy.myanimelist"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,12 +43,9 @@
         {
           "android": {
             "enableProguardInReleaseBuilds": true,
-            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }",
-            "newArchEnabled": true
+            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }"
           },
-          "ios": {
-            "newArchEnabled": true
-          }
+          "ios": {}
         }
       ],
       "expo-router"

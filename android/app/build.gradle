@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.narivo.anilistgraphql'
+    namespace 'com.believerbuddy.myanimelist'
     defaultConfig {
-        applicationId 'com.narivo.anilistgraphql'
+        applicationId 'com.believerbuddy.myanimelist'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

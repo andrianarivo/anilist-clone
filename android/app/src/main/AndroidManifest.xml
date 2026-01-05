@@ -25,6 +25,8 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="exp+anilist-graphql"/>
+        <data android:scheme="anilist-clone"/>
+        <data android:scheme="exp+my-anime-list"/>
       </intent-filter>
     </activity>
   </application>
