@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Animated from 'react-native-reanimated';
 
+import { ROUTES } from '@/constants/routes';
 import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
@@ -32,7 +33,7 @@ const Watching = ({
     <View {...props} className='mx-2'>
       <TouchableOpacity
         onPress={() => router.push({
-          pathname: `/anime/${mediaId}`,
+          pathname: ROUTES.DYNAMIC.ANIME_DETAILS(mediaId),
           params: { imgSource: uri }
         })}
       >

@@ -4,6 +4,7 @@ import { Blurhash } from 'react-native-blurhash';
 import Animated from 'react-native-reanimated';
 import Rating from './Rating';
 
+import { ROUTES } from '@/constants/routes';
 import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
@@ -43,7 +44,7 @@ const NewRelease = ({
     <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
       <TouchableOpacity
         onPress={() => router.push({
-          pathname: `/anime/${mediaId}`,
+          pathname: ROUTES.DYNAMIC.ANIME_DETAILS(mediaId),
           params: { imgSource: coverUri }
         })}
       >

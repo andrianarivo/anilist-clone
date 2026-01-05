@@ -1,6 +1,7 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { useFonts } from '@expo-google-fonts/roboto';
 import { customFontsToLoad } from '@theme/typography';
+import { ROUTES } from '@/constants/routes';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
@@ -9,7 +10,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
-import { colors } from '@/theme/colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,9 +42,9 @@ export default function RootLayout() {
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <SafeAreaProvider>
                     <Stack screenOptions={{ headerShown: false }}>
-                        <Stack.Screen name="(tabs)" />
+                        <Stack.Screen name={ROUTES.ROOT.TABS_GROUP.name} />
                     </Stack>
-                    <StatusBar style={'light'} backgroundColor='#18181b' />
+                    <StatusBar style={'dark'} />
                 </SafeAreaProvider>
             </GestureHandlerRootView>
         </ApolloProvider>

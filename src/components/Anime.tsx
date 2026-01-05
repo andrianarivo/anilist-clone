@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Rating from './Rating';
 
+import { ROUTES } from '@/constants/routes';
 import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
@@ -36,7 +37,7 @@ const Anime = ({
   return (
     <TouchableOpacity
       onPress={() => router.push({
-        pathname: `/anime/${mediaId}`,
+        pathname: ROUTES.DYNAMIC.ANIME_DETAILS(mediaId),
         params: { imgSource: uri }
       })}
     >
