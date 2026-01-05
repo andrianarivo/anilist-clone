@@ -1,4 +1,5 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client/react';
 import Anime from '@components/anime';
 import CollectionView from '@components/collection-view';
 import NewRelease from '@components/new-release';
@@ -54,7 +55,7 @@ const useLazyMostPopular = () => {
       }
     }
   `;
-    return useLazyQuery(QUERY);
+    return useLazyQuery<any, any>(QUERY);
 };
 
 const useLazyAllMedia = () => {
@@ -81,7 +82,7 @@ const useLazyAllMedia = () => {
       }
     }
   `;
-    return useLazyQuery(QUERY);
+    return useLazyQuery<any, any>(QUERY);
 };
 
 const useLazyWatching = () => {
@@ -104,7 +105,7 @@ const useLazyWatching = () => {
       }
     }
   `;
-    return useLazyQuery(QUERY);
+    return useLazyQuery<any, any>(QUERY);
 };
 
 export default function Home() {

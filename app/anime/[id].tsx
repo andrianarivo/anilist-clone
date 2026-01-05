@@ -2,7 +2,8 @@ import {
     default as Character,
 } from '@/components/character';
 import { Ionicons } from '@expo/vector-icons';
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client/react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useWindowDimensions } from 'react-native';
@@ -10,13 +11,13 @@ import { useWindowDimensions } from 'react-native';
 import React, { useEffect } from 'react';
 import {
     RefreshControl,
-    SafeAreaView,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
     ViewProps,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import HTML from 'react-native-render-html';
 import Animated from 'react-native-reanimated';
@@ -64,7 +65,7 @@ const useLazyAnimeDetails = (animeId: number) => {
       }
     }
   `;
-    return useLazyQuery(QUERY);
+    return useLazyQuery<any, any>(QUERY);
 };
 
 const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {

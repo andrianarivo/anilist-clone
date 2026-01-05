@@ -15,7 +15,7 @@
     "ts-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/client": "^3.12.7",
+    "@apollo/client": "4.0.11",
     "@expo-google-fonts/roboto": "^0.2.3",
     "@expo/match-media": "^0.4.0",
     "@react-navigation/bottom-tabs": "^7.2.2",
@@ -39,7 +39,7 @@
     "graphql": "^16.10.0",
     "nativewind": "^4.1.25",
     "react": "19.1.0",
-    "react-native": "0.81.2",
+    "react-native": "0.81.5",
     "react-native-blurhash": "^2.0.1",
     "react-native-css-interop": "^0.1.5",
     "react-native-gesture-handler": "^2.22.2",

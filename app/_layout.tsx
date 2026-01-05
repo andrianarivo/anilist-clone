@@ -1,4 +1,5 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { useFonts } from '@expo-google-fonts/roboto';
 import { customFontsToLoad } from '@theme/typography';
 import { ROUTES } from '@/constants/routes';
@@ -14,7 +15,9 @@ import * as NavigationBar from 'expo-navigation-bar';
 SplashScreen.preventAutoHideAsync();
 
 const client = new ApolloClient({
-    uri: 'https://graphql.anilist.co',
+    link: new HttpLink({
+        uri: 'https://graphql.anilist.co',
+    }),
     cache: new InMemoryCache(),
 });
 
