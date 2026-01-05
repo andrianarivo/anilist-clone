@@ -4,8 +4,7 @@ import { Blurhash } from 'react-native-blurhash';
 import Animated from 'react-native-reanimated';
 import Rating from './Rating';
 
-import type { RootStackParamList } from '@/navigators/HomeNavigator';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
   mediaId: string;
@@ -14,7 +13,6 @@ type Props = ViewProps & {
   ratings: number;
   nbUsers: number;
   coverUri: string;
-  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 
 const NewRelease = ({
@@ -24,9 +22,9 @@ const NewRelease = ({
   ratings,
   nbUsers,
   coverUri,
-  navigation,
   ...props
 }: Props) => {
+  const router = useRouter();
   const [blurhash, setBlurhash] = useState('');
 
   const anime = {
@@ -44,7 +42,10 @@ const NewRelease = ({
   return (
     <View {...props} className='m-1 rounded-md overflow-hidden shadow-lg '>
       <TouchableOpacity
-        onPress={() => navigation.push('AnimeDetails', { anime })}
+        onPress={() => router.push({
+          pathname: `/anime/${mediaId}`,
+          params: { imgSource: coverUri }
+        })}
       >
         <Animated.Image
           sharedTransitionTag={`image_${mediaId}`}

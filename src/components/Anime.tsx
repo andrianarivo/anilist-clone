@@ -3,8 +3,7 @@ import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Rating from './Rating';
 
-import type { RootStackParamList } from '@/navigators/HomeNavigator';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
   uri: string;
@@ -14,7 +13,6 @@ type Props = ViewProps & {
   nbUsers: number;
   title: string;
   year: number;
-  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 
 const Anime = ({
@@ -25,9 +23,9 @@ const Anime = ({
   year,
   nbUsers,
   description,
-  navigation,
   ...props
 }: Props) => {
+  const router = useRouter();
   useEffect(() => { }, []);
 
   const anime = {
@@ -37,7 +35,10 @@ const Anime = ({
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.push('AnimeDetails', { anime })}
+      onPress={() => router.push({
+        pathname: `/anime/${mediaId}`,
+        params: { imgSource: uri }
+      })}
     >
       <View
         {...props}

@@ -4,8 +4,7 @@ import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Animated from 'react-native-reanimated';
 
-import type { RootStackParamList } from '@/navigators/HomeNavigator';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 
 type Props = ViewProps & {
   mediaId: string;
@@ -14,7 +13,6 @@ type Props = ViewProps & {
   progress?: number;
   season?: string;
   uri: string;
-  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 };
 const Watching = ({
   mediaId,
@@ -22,9 +20,9 @@ const Watching = ({
   episode,
   progress,
   uri,
-  navigation,
   ...props
 }: Props) => {
+  const router = useRouter();
   const anime = {
     mediaId: mediaId,
     imgSource: uri,
@@ -33,7 +31,10 @@ const Watching = ({
   return (
     <View {...props} className='mx-2'>
       <TouchableOpacity
-        onPress={() => navigation.push('AnimeDetails', { anime })}
+        onPress={() => router.push({
+          pathname: `/anime/${mediaId}`,
+          params: { imgSource: uri }
+        })}
       >
         <View className='overflow-hidden rounded-lg shadow-lg w-[162] h-[124]'>
           <Animated.Image
