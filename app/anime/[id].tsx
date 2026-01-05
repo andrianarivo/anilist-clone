@@ -1,7 +1,7 @@
 import {
     default as Character,
 } from '@/components/Character';
-import Star from '@/svg/Star';
+import { Ionicons } from '@expo/vector-icons';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -172,11 +172,12 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
                                         <View className='flex-row-reverse'>
                                             {animeDetailsData.score.map((_, index) => {
                                                 return (
-                                                    <Star
+                                                    <Ionicons
                                                         key={index}
+                                                        name="star"
+                                                        size={14}
+                                                        color="#E7C825"
                                                         className='mx-[2] my-[5]'
-                                                        width="14"
-                                                        height="13"
                                                     />
                                                 );
                                             })}
