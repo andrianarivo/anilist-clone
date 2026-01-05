@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
-import Rating from './Rating';
+import Rating from './rating';
 
 import { ROUTES } from '@/constants/routes';
 import { useRouter } from 'expo-router';
