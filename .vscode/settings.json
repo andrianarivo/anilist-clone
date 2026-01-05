@@ -8,5 +8,6 @@
     "Proguard",
     "reactnative",
     "skia"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "disabled"
 }
