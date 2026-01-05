@@ -11,7 +11,8 @@
     "prebuild:clean": "expo prebuild --clean",
     "eas:android": "eas build --platform android --profile development",
     "eas:ios": "eas build --platform ios --profile development",
-    "eas:all": "eas build --platform all --profile development"
+    "eas:all": "eas build --platform all --profile development",
+    "ts-check": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/client": "^3.12.7",

@@ -1,6 +1,6 @@
 import {
     default as Character,
-} from '@/components/Character';
+} from '@/components/character';
 import { Ionicons } from '@expo/vector-icons';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useLocalSearchParams, useRouter } from 'expo-router';

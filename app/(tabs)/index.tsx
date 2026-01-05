@@ -1,8 +1,8 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import Anime from '@components/Anime';
-import CollectionView from '@components/CollectionView';
-import NewRelease from '@components/NewRelease';
-import Watching from '@components/Watching';
+import Anime from '@components/anime';
+import CollectionView from '@components/collection-view';
+import NewRelease from '@components/new-release';
+import Watching from '@components/watching';
 import React, { useEffect } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import {
@@ -243,7 +243,7 @@ export default function Home() {
                     </View>
                 }
                 sections={SECTIONS}
-                renderSectionHeader={({ section }) => {
+                renderSectionHeader={({ section }: any) => {
                     return section.watching ? (
                         <Text className='ml-4 text-md text-white font-regular my-4'>
                             {section.title}
@@ -259,7 +259,7 @@ export default function Home() {
                         </View>
                     );
                 }}
-                renderElement={({ section, item }) => {
+                renderElement={({ section, item }: any) => {
                     return section.watching ? (
                         <Watching
                             mediaId={item.key}
