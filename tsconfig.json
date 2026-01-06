@@ -15,10 +15,10 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@utils/*": ["./src/utils/*"],
-			"@components/*": ["./src/components/*"],
+			"@components/*": ["components/*"],
 			"@navigators/*": ["./src/navigators/*"],
 			"@screens/*": ["./src/screens/*"],
-			"@theme/*": ["./src/theme/*"]
+			"@theme/*": ["theme/*"]
 		}
 	}
 }

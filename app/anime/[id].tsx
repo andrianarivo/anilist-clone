@@ -17,7 +17,7 @@ import { FlatList } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { default as Character } from "@/components/character";
+import { default as Character } from "components/character";
 
 type AnimeDetailsProps = ViewProps;
 

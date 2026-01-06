@@ -1,9 +1,13 @@
-import { gql } from "@apollo/client";
-import { useLazyQuery } from "@apollo/client/react";
-import Anime from "@components/anime";
-import CollectionView from "@components/collection-view";
-import NewRelease from "@components/new-release";
-import Watching from "@components/watching";
+import {
+	useLazyAllMedia,
+	useLazyMostPopular,
+	useLazyWatching,
+} from "hooks/useHomeQueries";
+import type { CollectionType, Item, SectionData } from "types/home";
+import Anime from "components/anime";
+import CollectionView from "components/collection-view";
+import NewRelease from "components/new-release";
+import Watching from "components/watching";
 import { useEffect } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import {
@@ -11,161 +15,7 @@ import {
 	useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-type CollectionType = "horizontal" | "grid";
 
-interface SectionData {
-	title: string;
-	watching?: boolean;
-	type: CollectionType;
-	data: ReadonlyArray<Item>;
-}
-
-interface Item {
-	title: string;
-	description?: string;
-	episode?: string;
-	progress?: number;
-	rating?: number;
-	nbUsers?: number;
-	season?: string;
-	year?: number;
-	uri: string;
-	key: string;
-}
-
-interface MostPopularData {
-	MediaTrend: {
-		popularity: number;
-		averageScore: number;
-		media: {
-			id: number;
-			title: {
-				userPreferred: string;
-			};
-			bannerImage: string;
-			studios: {
-				nodes: {
-					name: string;
-				}[];
-			};
-		};
-	};
-}
-
-interface AllMediaData {
-	Page: {
-		mediaList: {
-			media: {
-				id: number;
-				popularity: number;
-				description: string;
-				averageScore: number;
-				title: {
-					userPreferred: string;
-				};
-				coverImage: {
-					extraLarge: string;
-				};
-				startDate: {
-					year: number;
-				};
-			};
-		}[];
-	};
-}
-
-interface WatchingData {
-	Page: {
-		mediaList: {
-			progress: number;
-			media: {
-				id: number;
-				title: {
-					userPreferred: string;
-				};
-				coverImage: {
-					extraLarge: string;
-				};
-				episodes: number | null;
-			};
-		}[];
-	};
-}
-
-const useLazyMostPopular = () => {
-	const QUERY = gql`
-    {
-      MediaTrend(popularity_greater: 100000) {
-        date
-        popularity
-        averageScore
-        media {
-          id
-          title {
-            userPreferred
-          }
-          bannerImage
-          studios(isMain: true) {
-            nodes {
-              name
-            }
-          }
-        }
-      }
-    }
-  `;
-	return useLazyQuery<MostPopularData>(QUERY);
-};
-
-const useLazyAllMedia = () => {
-	const QUERY = gql`
-    {
-      Page(page: 1, perPage: 50) {
-        mediaList {
-          media {
-            id
-            popularity
-            description
-            averageScore
-            title {
-              userPreferred
-            }
-            coverImage {
-              extraLarge
-            }
-            startDate {
-              year
-            }
-          }
-        }
-      }
-    }
-  `;
-	return useLazyQuery<AllMediaData>(QUERY);
-};
-
-const useLazyWatching = () => {
-	const QUERY = gql`
-    {
-      Page(page: 1, perPage: 10) {
-        mediaList(status_in: [PAUSED]) {
-          progress
-          media {
-            id
-            title {
-              userPreferred
-            }
-            coverImage {
-              extraLarge
-            }
-            episodes
-          }
-        }
-      }
-    }
-  `;
-	return useLazyQuery<WatchingData>(QUERY);
-};
 
 export default function Home() {
 	const insets = useSafeAreaInsets();
