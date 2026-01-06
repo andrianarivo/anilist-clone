@@ -1,39 +1,24 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "jsx": "react-native",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "strict": true,
-    "target": "esnext",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@navigators/*": [
-        "./src/navigators/*"
-      ],
-      "@screens/*": [
-        "./src/screens/*"
-      ],
-      "@theme/*": [
-        "./src/theme/*"
-      ]
-    }
-  }
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"jsx": "react-native",
+		"lib": ["dom", "esnext"],
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"strict": true,
+		"target": "esnext",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@components/*": ["./src/components/*"],
+			"@navigators/*": ["./src/navigators/*"],
+			"@screens/*": ["./src/screens/*"],
+			"@theme/*": ["./src/theme/*"]
+		}
+	}
 }

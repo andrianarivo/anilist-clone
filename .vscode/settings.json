@@ -1,14 +1,14 @@
 {
-  "cSpell.words": [
-    "anilist",
-    "anilistgraphql",
-    "Blurhash",
-    "medialist",
-    "narivo",
-    "Proguard",
-    "reactnative",
-    "skia"
-  ],
-  "java.compile.nullAnalysis.mode": "disabled",
-  "java.configuration.updateBuildConfiguration": "interactive"
+	"cSpell.words": [
+		"anilist",
+		"anilistgraphql",
+		"Blurhash",
+		"medialist",
+		"narivo",
+		"Proguard",
+		"reactnative",
+		"skia"
+	],
+	"java.compile.nullAnalysis.mode": "disabled",
+	"java.configuration.updateBuildConfiguration": "interactive"
 }
