@@ -1,14 +1,11 @@
-import { gql } from "@apollo/client";
+
+
 import { useLazyQuery } from "@apollo/client/react";
-import type {
-	AllMediaData,
-	MostPopularData,
-	WatchingData,
-} from "../types/home";
+import { graphql } from "../types/gql";
 
 export const useLazyMostPopular = () => {
-	const QUERY = gql`
-    {
+	const QUERY = graphql(`
+    query GetMostPopular {
       MediaTrend(popularity_greater: 100000) {
         date
         popularity
@@ -27,13 +24,13 @@ export const useLazyMostPopular = () => {
         }
       }
     }
-  `;
-	return useLazyQuery<MostPopularData>(QUERY);
+  `);
+	return useLazyQuery(QUERY);
 };
 
 export const useLazyAllMedia = () => {
-	const QUERY = gql`
-    {
+	const QUERY = graphql(`
+    query GetAllMedia {
       Page(page: 1, perPage: 50) {
         mediaList {
           media {
@@ -54,13 +51,13 @@ export const useLazyAllMedia = () => {
         }
       }
     }
-  `;
-	return useLazyQuery<AllMediaData>(QUERY);
+  `);
+	return useLazyQuery(QUERY);
 };
 
 export const useLazyWatching = () => {
-	const QUERY = gql`
-    {
+	const QUERY = graphql(`
+    query GetWatching {
       Page(page: 1, perPage: 10) {
         mediaList(status_in: [PAUSED]) {
           progress
@@ -77,6 +74,6 @@ export const useLazyWatching = () => {
         }
       }
     }
-  `;
-	return useLazyQuery<WatchingData>(QUERY);
+  `);
+	return useLazyQuery(QUERY);
 };

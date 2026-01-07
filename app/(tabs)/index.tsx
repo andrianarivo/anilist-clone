@@ -69,41 +69,55 @@ export default function Home() {
 	}
 
 	if (hasEssentialData && mostPopular.data?.MediaTrend && allMedia.data?.Page) {
+// Helper to safely extract title
+		const getSafeTitle = (title: { userPreferred?: string | null } | null | undefined) =>
+			title?.userPreferred ?? "Unknown";
+
+		// Helper to safely extract banner item
+		const media = mostPopular.data.MediaTrend.media;
+		const studioNodes = media?.studios?.nodes;
+		
 		const bannerItem = {
-			mediaId: mostPopular.data.MediaTrend.media.id.toString(),
-			title: mostPopular.data.MediaTrend.media.title.userPreferred,
+			mediaId: String(media?.id),
+			title: getSafeTitle(media?.title),
 			publisher:
-				mostPopular.data.MediaTrend.media.studios.nodes.length > 0
-					? (mostPopular.data.MediaTrend.media.studios.nodes[0]?.name ??
-						"Unknown")
+				studioNodes && studioNodes.length > 0
+					? (studioNodes[0]?.name ?? "Unknown")
 					: "Unknown",
-			ratings: mostPopular.data.MediaTrend.averageScore,
-			nbUsers: mostPopular.data.MediaTrend.popularity,
-			coverUri: mostPopular.data.MediaTrend.media.bannerImage,
+			ratings: mostPopular.data.MediaTrend.averageScore ?? 0,
+			nbUsers: mostPopular.data.MediaTrend.popularity ?? 0,
+			coverUri: media?.bannerImage ?? "",
 		};
 
-		const ALL_MEDIAS = (allMedia.data.Page.mediaList || []).map((item) => {
+		const ALL_MEDIAS = (allMedia.data.Page.mediaList || []).flatMap((item) => {
+			if (!item?.media) return [];
+			const mediaData = item.media;
 			const media: Item = {
-				key: item.media.id.toString(),
-				nbUsers: item.media.popularity,
-				description: item.media.description,
-				rating: item.media.averageScore,
-				title: item.media.title.userPreferred,
-				uri: item.media.coverImage.extraLarge,
-				year: item.media.startDate.year,
+				key: String(mediaData.id),
+				nbUsers: mediaData.popularity ?? 0,
+				description: mediaData.description ?? "",
+				rating: mediaData.averageScore ?? 0,
+				title: getSafeTitle(mediaData.title),
+				uri: mediaData.coverImage?.extraLarge ?? "",
+				year: mediaData.startDate?.year ?? 0,
 			};
-			return media;
+			return [media];
 		});
 
-		const WATCHING = (watching.data?.Page?.mediaList || []).map((item) => {
+		const WATCHING = (watching.data?.Page?.mediaList || []).flatMap((item) => {
+			if (!item?.media) return [];
+			const mediaData = item.media;
+			const episodes = mediaData.episodes ?? 1; // Avoid division by zero
+			const progress = item.progress ?? 0;
+			
 			const media: Item = {
-				key: item.media.id.toString(),
-				title: item.media.title.userPreferred,
-				uri: item.media.coverImage.extraLarge,
-				episode: item.progress.toString(),
-				progress: item.media.episodes ? item.progress / item.media.episodes : 0,
+				key: String(mediaData.id),
+				title: getSafeTitle(mediaData.title),
+				uri: mediaData.coverImage?.extraLarge ?? "",
+				episode: String(progress),
+				progress: episodes > 0 ? progress / episodes : 0,
 			};
-			return media;
+			return [media];
 		});
 
 		const SECTIONS: ReadonlyArray<SectionData> = [

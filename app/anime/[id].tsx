@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useLazyQuery } from "@apollo/client/react";
 import { Ionicons } from "@expo/vector-icons";
 import { default as Character } from "components/character";
@@ -18,6 +17,7 @@ import { FlatList } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { graphql } from "types/gql";
 
 type AnimeDetailsProps = ViewProps;
 
@@ -28,34 +28,8 @@ type AnimeCharacter = {
 	imageUri: string;
 };
 
-type MediaData = {
-	Media: {
-		id: number;
-		studios: {
-			nodes: { name: string }[];
-		};
-		startDate: { year: number };
-		popularity: number;
-		averageScore: number;
-		description: string;
-		title: { userPreferred: string };
-		characters: {
-			nodes: {
-				id: string;
-				name: { userPreferred: string };
-				gender: string;
-				image: { medium: string };
-			}[];
-		};
-	};
-};
-
-type MediaVars = {
-	id: number;
-};
-
 const useLazyAnimeDetails = () => {
-	const QUERY = gql`
+	const QUERY = graphql(`
     query GetMedia($id: Int) {
       Media(id: $id) {
         id
@@ -87,8 +61,8 @@ const useLazyAnimeDetails = () => {
         }
       }
     }
-  `;
-	return useLazyQuery<MediaData, MediaVars>(QUERY);
+  `);
+	return useLazyQuery(QUERY);
 };
 
 const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
@@ -133,28 +107,32 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 
 	if (animeDetails.data?.Media) {
 		const characters: AnimeCharacter[] = [];
-		for (let i = 0; i < animeDetails.data?.Media.characters.nodes.length; i++) {
-			characters.push({
-				id: animeDetails.data?.Media.characters.nodes[i].id,
-				name: animeDetails.data?.Media.characters.nodes[i].name.userPreferred,
-				gender: animeDetails.data?.Media.characters.nodes[i].gender,
-				imageUri: animeDetails.data?.Media.characters.nodes[i].image.medium,
-			});
+		const nodes = animeDetails.data.Media.characters?.nodes ?? [];
+
+		for (const node of nodes) {
+			if (node) {
+				characters.push({
+					id: String(node.id),
+					name: node.name?.userPreferred ?? "Unknown",
+					gender: node.gender ?? "Unknown",
+					imageUri: node.image?.medium ?? "",
+				});
+			}
 		}
 
 		const animeDetailsData = {
-			studio: animeDetails.data?.Media.studios.nodes[0]?.name,
-			title: animeDetails.data?.Media.title.userPreferred,
-			description: animeDetails.data?.Media.description,
-			year: animeDetails.data?.Media.startDate.year,
+			studio: animeDetails.data.Media.studios?.nodes?.[0]?.name ?? "Unknown",
+			title: animeDetails.data.Media.title?.userPreferred ?? "Unknown",
+			description: animeDetails.data.Media.description ?? "",
+			year: animeDetails.data.Media.startDate?.year ?? 0,
 			score: Array.from(
 				{
-					length: Math.round((animeDetails.data?.Media.averageScore || 0) / 20),
+					length: Math.round((animeDetails.data.Media.averageScore || 0) / 20),
 				},
 				(_, i) => i,
 			),
 			characters: characters,
-			popularity: animeDetails.data?.Media.popularity,
+			popularity: animeDetails.data.Media.popularity,
 		};
 
 		return (
