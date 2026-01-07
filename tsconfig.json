@@ -13,12 +13,11 @@
 		"target": "esnext",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@utils/*": ["./src/utils/*"],
 			"@components/*": ["components/*"],
-			"@navigators/*": ["./src/navigators/*"],
-			"@screens/*": ["./src/screens/*"],
-			"@theme/*": ["theme/*"]
+			"@theme/*": ["theme/*"],
+			"@types/*": ["types/*"],
+			"@hooks/*": ["hooks/*"],
+			"@constants/*": ["constants/*"],
 		}
 	}
 }
