@@ -1,9 +1,9 @@
-import { colors } from "theme/colors";
+import { ROUTES } from "constants/routes";
 import { useRouter } from "expo-router";
 import { Text, TouchableOpacity, View, type ViewProps } from "react-native";
 import * as Progress from "react-native-progress";
 import Animated from "react-native-reanimated";
-import { ROUTES } from "constants/routes";
+import { colors } from "theme/colors";
 
 type Props = ViewProps & {
 	mediaId: string;

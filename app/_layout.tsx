@@ -1,7 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { useFonts } from "@expo-google-fonts/roboto";
-import { customFontsToLoad } from "theme/typography";
+import { ROUTES } from "constants/routes";
 import * as NavigationBar from "expo-navigation-bar";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ROUTES } from "constants/routes";
+import { customFontsToLoad } from "theme/typography";
 
 SplashScreen.preventAutoHideAsync();
 

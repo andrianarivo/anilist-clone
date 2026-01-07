@@ -9,6 +9,16 @@
 		"reactnative",
 		"skia"
 	],
-	"java.compile.nullAnalysis.mode": "disabled",
-	"java.configuration.updateBuildConfiguration": "interactive"
+	"java.import.exclusions": [
+	    "**/node_modules/**",
+		"**/android/.gradle/**",
+		"**/android/build/**"
+	],
+	"files.watcherExclude": {
+		"**/node_modules/**": true
+	},
+	"search.exclude": {
+		"**/node_modules/**": true
+	},
+	"java.compile.nullAnalysis.mode": "automatic"
 }

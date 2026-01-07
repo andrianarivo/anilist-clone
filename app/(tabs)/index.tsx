@@ -1,21 +1,19 @@
+import Anime from "components/anime";
+import CollectionView from "components/collection-view";
+import NewRelease from "components/new-release";
+import Watching from "components/watching";
 import {
 	useLazyAllMedia,
 	useLazyMostPopular,
 	useLazyWatching,
 } from "hooks/useHomeQueries";
-import type { CollectionType, Item, SectionData } from "types/home";
-import Anime from "components/anime";
-import CollectionView from "components/collection-view";
-import NewRelease from "components/new-release";
-import Watching from "components/watching";
 import { useEffect } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import {
 	SafeAreaView,
 	useSafeAreaInsets,
 } from "react-native-safe-area-context";
-
-
+import type { CollectionType, Item, SectionData } from "types/home";
 
 export default function Home() {
 	const insets = useSafeAreaInsets();

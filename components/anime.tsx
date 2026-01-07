@@ -1,9 +1,8 @@
+import { ROUTES } from "constants/routes";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Text, TouchableOpacity, View, type ViewProps } from "react-native";
 import Animated from "react-native-reanimated";
-
-import { ROUTES } from "constants/routes";
 import Rating from "./rating";
 
 type Props = ViewProps & {

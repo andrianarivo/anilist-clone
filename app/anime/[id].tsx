@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useLazyQuery } from "@apollo/client/react";
 import { Ionicons } from "@expo/vector-icons";
+import { default as Character } from "components/character";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -17,7 +18,6 @@ import { FlatList } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { default as Character } from "components/character";
 
 type AnimeDetailsProps = ViewProps;
 
