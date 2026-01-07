@@ -16,7 +16,7 @@ SplashScreen.preventAutoHideAsync();
 
 const client = new ApolloClient({
 	link: new HttpLink({
-		uri: "https://graphql.anilist.co",
+		uri: process.env.EXPO_PUBLIC_ANILIST_API_URL,
 	}),
 	cache: new InMemoryCache(),
 });
