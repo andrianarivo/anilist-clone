@@ -10,7 +10,7 @@
 		"skia"
 	],
 	"java.import.exclusions": [
-	    "**/node_modules/**",
+		"**/node_modules/**",
 		"**/android/.gradle/**",
 		"**/android/build/**"
 	],
