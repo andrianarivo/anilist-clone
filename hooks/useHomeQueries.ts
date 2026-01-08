@@ -1,5 +1,3 @@
-
-
 import { useLazyQuery } from "@apollo/client/react";
 import { graphql } from "../types/gql";
 

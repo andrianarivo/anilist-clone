@@ -25,6 +25,20 @@ export const ROUTES = {
 		PROFILE: { path: "/(tabs)/profile", name: "profile" },
 	},
 
+	SEARCH_RESULTS: {
+		TRENDING: { path: "/search/anime/trending", name: "search/anime/trending" },
+		POPULAR: { path: "/search/anime/popular", name: "search/anime/popular" },
+		THIS_SEASON: {
+			path: "/search/anime/this-season",
+			name: "search/anime/this-season",
+		},
+		NEXT_SEASON: {
+			path: "/search/anime/next-season",
+			name: "search/anime/next-season",
+		},
+		TOP_100: { path: "/search/anime/top-100", name: "search/anime/top-100" },
+	},
+
 	/**
 	 * Dynamic routes generators
 	 */
