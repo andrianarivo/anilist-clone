@@ -19,5 +19,3 @@ export interface SectionData {
 	type: CollectionType;
 	data: ReadonlyArray<Item>;
 }
-
-
