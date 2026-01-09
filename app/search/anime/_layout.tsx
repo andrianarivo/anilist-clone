@@ -5,27 +5,27 @@ export default function TabLayout() {
     <NativeTabs>
       <NativeTabs.Trigger name={'top-100'}>
         <Label>Top 100</Label>
-        <Icon sf="house.fill" />
+        <Icon sf="trophy.fill" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name={'trending'}>
         <Label>Trending</Label>
-        <Icon sf="magnifyingglass" />
+        <Icon sf="flame.fill" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name={'this-season'}>
         <Label>This Season</Label>
-        <Icon sf="person.2.fill" />
+        <Icon sf="calendar" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name={'next-season'}>
         <Label>Next Season</Label>
-        <Icon sf="play.square.stack.fill" />
+        <Icon sf="calendar.badge.plus" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name={'popular'}>
         <Label>Popular</Label>
-        <Icon sf="person.fill" />
+        <Icon sf="heart.fill" />
       </NativeTabs.Trigger>
     </NativeTabs>
   )

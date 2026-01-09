@@ -1,5 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
+import '../global.css'
 import { useFonts } from '@expo-google-fonts/roboto'
 import * as NavigationBar from 'expo-navigation-bar'
 import { Stack } from 'expo-router'
@@ -44,7 +45,7 @@ export default function RootLayout() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={'anime'} />
+            <Stack.Screen name={'search/anime'} />
           </Stack>
           <StatusBar style={'dark'} />
         </SafeAreaProvider>
