@@ -1,6 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-import '../global.css'
 import { useFonts } from '@expo-google-fonts/roboto'
 import * as NavigationBar from 'expo-navigation-bar'
 import { Stack } from 'expo-router'
@@ -11,6 +10,8 @@ import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { customFontsToLoad } from 'theme/typography'
+import '../global.css'
+import 'react-native-reanimated'
 
 SplashScreen.preventAutoHideAsync()
 
