@@ -1,7 +1,6 @@
 import Anime from 'components/anime'
 import { MediaFragment } from 'hooks/useAnimeSearchQueries'
-import React from 'react'
-import { ActivityIndicator, FlatList, View } from 'react-native'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { type FragmentType, useFragment as getFragment } from 'types/gql'
 
@@ -17,16 +16,23 @@ type Props = {
   loading: boolean
   onEndReached: () => void
   isLoadingMore?: boolean
+  title?: string
 }
 
-const MediaList = ({ data, loading, onEndReached, isLoadingMore }: Props) => {
+const MediaList = ({
+  data,
+  loading,
+  onEndReached,
+  isLoadingMore,
+  title,
+}: Props) => {
   const { bottom: bottomInset } = useSafeAreaInsets()
   const paddingBottom = (bottomInset || 0) + 20
 
   if (loading && !data) {
     return (
-      <View className="flex-1 justify-center items-center bg-deep-black">
-        <ActivityIndicator size="large" color="#fff" />
+      <View className="flex-1 justify-center items-center bg-global-bg">
+        <ActivityIndicator size="large" color="#3577ff" />
       </View>
     )
   }
@@ -42,7 +48,7 @@ const MediaList = ({ data, loading, onEndReached, isLoadingMore }: Props) => {
       <Anime
         key={media.id}
         mediaId={media.id.toString()}
-        uri={media.coverImage?.extraLarge || ''}
+        uri={media.bannerImage || media.coverImage?.extraLarge || ''}
         ratings={media.averageScore || 0}
         nbUsers={media.popularity || 0}
         title={media.title?.userPreferred || ''}
@@ -53,25 +59,34 @@ const MediaList = ({ data, loading, onEndReached, isLoadingMore }: Props) => {
   }
 
   return (
-    <FlatList
-      data={data?.media || []}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => {
-        if (!item) return index.toString()
-        const media = getFragment(MediaFragment, item)
-        return media.id.toString()
-      }}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
-      contentContainerStyle={{
-        paddingBottom,
-      }}
-      ListFooterComponent={
-        isLoadingMore ? (
-          <ActivityIndicator color="#fff" className="py-4" />
-        ) : null
-      }
-    />
+    <View className="flex-1 bg-global-bg">
+      <FlatList
+        data={data?.media || []}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => {
+          if (!item) return index.toString()
+          const media = getFragment(MediaFragment, item)
+          return media.id.toString()
+        }}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{
+          paddingBottom,
+        }}
+        ListHeaderComponent={
+          title ? (
+            <View className="px-4 py-4 pt-2">
+              <Text className="text-3xl font-bold text-global-text">{title}</Text>
+            </View>
+          ) : null
+        }
+        ListFooterComponent={
+          isLoadingMore ? (
+            <ActivityIndicator color="#3577ff" className="py-4" />
+          ) : null
+        }
+      />
+    </View>
   )
 }
 

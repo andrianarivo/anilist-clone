@@ -47,25 +47,30 @@ const Anime = ({
     >
       <View
         {...props}
-        className="m-2 p-4 rounded-lg overflow-hidden flex-row items-center"
+        className="m-2 rounded-2xl overflow-hidden shadow-sm bg-white/10"
       >
-        <View className="overflow-hidden rounded-2xl mr-2 shadow-lg w-[124] h-[194]">
+        <View className="w-full aspect-video relative">
           <Animated.Image
+            // @ts-ignore
             sharedTransitionTag={`image_${anime.mediaId}`}
             className="w-full h-full"
             source={{ uri: uri }}
+            resizeMode="cover"
           />
+          <View className="absolute top-2 right-2 px-2 py-1 rounded-md bg-white/90 backdrop-blur-md">
+            <Rating count={ratings} nbUsers={nbUsers} />
+          </View>
         </View>
-        <View className="flex-1 flex-grow">
-          <Text className="font-bold text-md flex-wrap">{title}</Text>
-          <Text className="font-regular text-xs text-neutral500">{year}</Text>
+        <View className="p-3">
           <Text
-            className="font-regular text-xs flex-1 flex-wrap"
-            numberOfLines={7}
+            className="font-bold text-lg text-global-text mb-1"
+            numberOfLines={1}
           >
-            {description}
+            {title}
           </Text>
-          <Rating count={ratings} nbUsers={nbUsers} />
+          <Text className="font-medium text-sm text-secondary-text">
+            {year}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
