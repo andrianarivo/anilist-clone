@@ -51,6 +51,7 @@ export default function Top100Screen() {
         loading={loading}
         onEndReached={onEndReached}
         isLoadingMore={fetchMoreLoading}
+        title="Top 100 Anime"
       />
     </View>
   )

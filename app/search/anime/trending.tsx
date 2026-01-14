@@ -65,6 +65,7 @@ export default function TrendingScreen() {
         loading={loading}
         onEndReached={onEndReached}
         isLoadingMore={fetchMoreLoading}
+        title="Trending Now"
       />
     </View>
   )

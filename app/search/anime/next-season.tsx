@@ -58,6 +58,7 @@ export default function NextSeasonScreen() {
         loading={loading}
         onEndReached={onEndReached}
         isLoadingMore={fetchMoreLoading}
+        title="Next Season"
       />
     </View>
   )

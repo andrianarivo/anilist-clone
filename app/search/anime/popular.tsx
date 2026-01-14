@@ -51,6 +51,7 @@ export default function PopularScreen() {
         loading={loading}
         onEndReached={onEndReached}
         isLoadingMore={fetchMoreLoading}
+        title="All Time Popular"
       />
     </View>
   )
