@@ -33,7 +33,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync('#18181b')
+      NavigationBar.setBackgroundColorAsync('#152232')
     }
   }, [])
 
@@ -43,12 +43,12 @@ export default function RootLayout() {
 
   return (
     <ApolloProvider client={client}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView className="flex-1 bg-global-bg">
         <SafeAreaProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name={'search/anime'} />
           </Stack>
-          <StatusBar style={'dark'} />
+          <StatusBar style={'light'} />
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </ApolloProvider>
