@@ -26,8 +26,8 @@ const MediaList = ({
   isLoadingMore,
   title,
 }: Props) => {
-  const { bottom: bottomInset } = useSafeAreaInsets()
-  const paddingBottom = (bottomInset || 0) + 20
+  const { top: topInset } = useSafeAreaInsets()
+  const paddingTop = (topInset || 0)
 
   if (loading && !data) {
     return (
@@ -71,7 +71,7 @@ const MediaList = ({
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         contentContainerStyle={{
-          paddingBottom,
+          paddingTop,
         }}
         ListHeaderComponent={
           title ? (
