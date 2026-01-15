@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { default as Character } from "components/character";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
 	RefreshControl,
 	ScrollView,
@@ -12,11 +12,13 @@ import {
 	useWindowDimensions,
 	View,
 	type ViewProps,
+	Modal,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import { graphql } from "types/gql";
 
 type AnimeDetailsProps = ViewProps;
@@ -37,6 +39,9 @@ const useLazyAnimeDetails = () => {
           nodes {
             name
           }
+        }
+        coverImage {
+          extraLarge
         }
         startDate{
           year
@@ -73,7 +78,9 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 	}>();
 	const mediaId = id;
 	const [getAnimeDetails, animeDetails] = useLazyAnimeDetails();
-	const { width } = useWindowDimensions();
+	const { width, height } = useWindowDimensions();
+	const insets = useSafeAreaInsets();
+	const [modalVisible, setModalVisible] = useState(false);
 
 	useEffect(() => {
 		if (mediaId) {
@@ -83,13 +90,15 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 
 	if (animeDetails.error) {
 		return (
-			<SafeAreaView className="flex-1">
+			<SafeAreaView className="flex-1 bg-global-bg">
+				<StatusBar style="light" />
 				<ScrollView
 					contentContainerStyle={{
 						flex: 1,
 					}}
 					refreshControl={
 						<RefreshControl
+							tintColor={"white"}
 							onRefresh={() => {
 								getAnimeDetails({ variables: { id: Number(mediaId) } });
 							}}
@@ -133,28 +142,63 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 			),
 			characters: characters,
 			popularity: animeDetails.data.Media.popularity,
+			coverImage: animeDetails.data.Media.coverImage?.extraLarge,
 		};
 
 		return (
-			<View {...props} className="flex-1">
+			<View {...props} className="flex-1 bg-global-bg">
+			    <StatusBar style="light" />
+				<Modal
+					visible={modalVisible}
+					transparent={true}
+					animationType="fade"
+					onRequestClose={() => setModalVisible(false)}
+				>
+					<View className="flex-1 bg-black justify-center items-center relative">
+						<TouchableOpacity
+							onPress={() => setModalVisible(false)}
+							className="absolute top-12 right-4 z-10 p-2 bg-black/50 rounded-full"
+						>
+							<Ionicons name="close" size={30} color="white" />
+						</TouchableOpacity>
+						<Animated.Image
+							sharedTransitionTag={`image_${mediaId}`}
+							style={{ width: width, height: height }}
+							resizeMode="contain"
+							source={{
+								uri: animeDetailsData.coverImage ?? imgSource,
+							}}
+						/>
+					</View>
+				</Modal>
 				<FlatList
 					ListHeaderComponent={() => {
 						return (
 							<View>
-								<View className="relative">
-									<Animated.Image
-										sharedTransitionTag={`image_${mediaId}`}
-										className="h-[374]"
-										resizeMode="cover"
-										source={{
-											uri: imgSource,
-										}}
-									/>
-									<LinearGradient
-										className="w-full h-20 absolute bottom-0 left-0"
-										colors={["transparent", "#1e1e22"]}
-									/>
-								</View>
+									<View className="relative">
+										<TouchableOpacity
+											onPress={() => {
+												setModalVisible(true);
+											}}
+											activeOpacity={0.9}
+										>
+											<Animated.Image
+												sharedTransitionTag={`image_${mediaId}`}
+												className="w-full h-[374]"
+												resizeMode="cover"
+												source={{
+													uri: imgSource,
+												}}
+											/>
+											<View className="absolute top-1/2 left-1/2 -translate-x-4 -translate-y-4 bg-black/30 rounded-full p-2">
+												<Ionicons name="expand-outline" size={24} color="white" />
+											</View>
+										</TouchableOpacity>
+										<LinearGradient
+											className="w-full h-20 absolute bottom-0 left-0"
+											colors={["transparent", "#152232"]}
+										/>
+									</View>
 								<View className="flex-row justify-between items-center mx-3">
 									<View className="flex-row items-center">
 										<View>
@@ -212,7 +256,10 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 					ItemSeparatorComponent={() => {
 						return <View className="h-2" />;
 					}}
-					contentContainerStyle={{ alignItems: "center" }}
+					contentContainerStyle={{
+						alignItems: "center",
+						paddingBottom: insets.bottom + 20,
+					}}
 					numColumns={2}
 					data={animeDetailsData.characters}
 					renderItem={({ item }) => {
@@ -263,7 +310,8 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 	}
 
 	return (
-		<SafeAreaView className="flex-1">
+		<SafeAreaView className="flex-1 bg-global-bg">
+            <StatusBar style="light" />
 			<Animated.Image
 				sharedTransitionTag={`image_${mediaId}`}
 				className="h-[374]"

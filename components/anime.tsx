@@ -57,20 +57,20 @@ const Anime = ({
             source={{ uri: uri }}
             resizeMode="cover"
           />
-          <View className="absolute top-2 right-2 px-2 py-1 rounded-md bg-white/90 backdrop-blur-md">
-            <Rating count={ratings} nbUsers={nbUsers} />
-          </View>
         </View>
-        <View className="p-3">
-          <Text
-            className="font-bold text-lg text-global-text mb-1"
-            numberOfLines={1}
-          >
-            {title}
-          </Text>
-          <Text className="font-medium text-sm text-secondary-text">
-            {year}
-          </Text>
+        <View className="flex-row justify-between items-baseline p-3">
+          <View>
+            <Text
+              className="font-bold text-lg text-global-text"
+              numberOfLines={1}
+            >
+              {title}
+            </Text>
+            <Text className="font-medium text-sm text-secondary-text">
+              {year}
+            </Text>
+          </View>
+          <Rating count={ratings} nbUsers={nbUsers} />
         </View>
       </View>
     </TouchableOpacity>

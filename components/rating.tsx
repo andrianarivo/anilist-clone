@@ -36,7 +36,7 @@ const Rating = ({ count = 0, nbUsers, ...props }: Props) => {
           name={iconName}
           size={14}
           color="#E7C825"
-          className="mx-0.5"
+          className="ml-1"
         />
       )
     }
@@ -45,15 +45,15 @@ const Rating = ({ count = 0, nbUsers, ...props }: Props) => {
 
   return (
     <View {...props} className="items-end">
-      <View className="flex-row items-center px-2 py-1 rounded-full">
-        <Text className="font-bold text-xs text-black mr-1">{rating.toFixed(1)}/5</Text>
+      <View className="flex-row items-center py-1 rounded-full">
+        <Text className="font-bold text-xs text-global-text mr-1">{rating.toFixed(1)}/5</Text>
         <View className="flex-row">{renderStars()}</View>
       </View>
       {nbUsers ? (
         <View className="flex-row">
-          <Text className="text-xs text-black">Listed by </Text>
-          <Text className="text-xs font-bold text-black">{nbUsers}</Text>
-          <Text className="text-xs text-black"> users</Text>
+          <Text className="text-xs text-secondary-text">Listed by </Text>
+          <Text className="text-xs font-bold text-secondary-text">{nbUsers}</Text>
+          <Text className="text-xs text-secondary-text"> users</Text>
         </View>
       ) : null}
     </View>
