@@ -12,6 +12,13 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { customFontsToLoad } from 'theme/typography'
 import '../global.css'
 import 'react-native-reanimated'
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+if (__DEV__) {
+  // Adds messages only in a dev environment
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 SplashScreen.preventAutoHideAsync()
 
@@ -34,6 +41,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync('#152232')
+      NavigationBar.setButtonStyleAsync('light')
     }
   }, [])
 
