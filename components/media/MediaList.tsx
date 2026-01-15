@@ -48,7 +48,7 @@ const MediaList = ({
       <Anime
         key={media.id}
         mediaId={media.id.toString()}
-        uri={media.bannerImage || media.coverImage?.extraLarge || ''}
+        uri={media.coverImage?.extraLarge || media.bannerImage || ''}
         ratings={media.averageScore || 0}
         nbUsers={media.popularity || 0}
         title={media.title?.userPreferred || ''}
