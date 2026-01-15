@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client/react";
 import { Ionicons } from "@expo/vector-icons";
 import { default as Character } from "components/character";
+import ZoomableImage from "components/ZoomableImage";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ import {
 	type ViewProps,
 	Modal,
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -148,28 +149,27 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 		return (
 			<View {...props} className="flex-1 bg-global-bg">
 			    <StatusBar style="light" />
-				<Modal
+					<Modal
 					visible={modalVisible}
 					transparent={true}
 					animationType="fade"
 					onRequestClose={() => setModalVisible(false)}
 				>
-					<View className="flex-1 bg-black justify-center items-center relative">
-						<TouchableOpacity
-							onPress={() => setModalVisible(false)}
-							className="absolute top-12 right-4 z-10 p-2 bg-black/50 rounded-full"
-						>
-							<Ionicons name="close" size={30} color="white" />
-						</TouchableOpacity>
-						<Animated.Image
-							sharedTransitionTag={`image_${mediaId}`}
-							style={{ width: width, height: height }}
-							resizeMode="contain"
-							source={{
-								uri: animeDetailsData.coverImage ?? imgSource,
-							}}
-						/>
-					</View>
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<View className="flex-1 bg-black justify-center items-center relative">
+							<TouchableOpacity
+								onPress={() => setModalVisible(false)}
+								className="absolute top-12 right-4 z-10 p-2 bg-black/50 rounded-full"
+							>
+								<Ionicons name="close" size={30} color="white" />
+							</TouchableOpacity>
+							<ZoomableImage
+								uri={animeDetailsData.coverImage ?? imgSource}
+								style={{ width: width, height: height }}
+								contentFit="contain"
+							/>
+						</View>
+					</GestureHandlerRootView>
 				</Modal>
 				<FlatList
 					ListHeaderComponent={() => {
