@@ -1,63 +1,67 @@
-import { Ionicons } from '@expo/vector-icons'
-import { cssInterop } from 'nativewind'
-import { Text, View, type ViewProps } from 'react-native'
+import { Ionicons } from "@expo/vector-icons";
+import { cssInterop } from "nativewind";
+import { Text, View, type ViewProps } from "react-native";
 
 cssInterop(Ionicons, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      color: true,
-    },
-  },
-})
+	className: {
+		target: "style",
+		nativeStyleToProp: {
+			color: true,
+		},
+	},
+});
 
 type Props = ViewProps & {
-  count: number
-  nbUsers?: number
-}
+	count: number;
+	nbUsers?: number;
+};
 
 const Rating = ({ count = 0, nbUsers, ...props }: Props) => {
-  const rating = count / 20
+	const rating = count / 20;
 
-  const renderStars = () => {
-    const stars = []
-    for (let i = 1; i <= 5; i++) {
-      let iconName: 'star' | 'star-half' | 'star-outline' = 'star'
-      if (i > rating) {
-        if (i - rating <= 0.5) {
-          iconName = 'star-half'
-        } else {
-          iconName = 'star-outline'
-        }
-      }
-      stars.push(
-        <Ionicons
-          key={i}
-          name={iconName}
-          size={14}
-          color="#E7C825"
-          className="ml-1"
-        />
-      )
-    }
-    return stars
-  }
+	const renderStars = () => {
+		const stars = [];
+		for (let i = 1; i <= 5; i++) {
+			let iconName: "star" | "star-half" | "star-outline" = "star";
+			if (i > rating) {
+				if (i - rating <= 0.5) {
+					iconName = "star-half";
+				} else {
+					iconName = "star-outline";
+				}
+			}
+			stars.push(
+				<Ionicons
+					key={i}
+					name={iconName}
+					size={14}
+					color="#E7C825"
+					className="ml-1"
+				/>,
+			);
+		}
+		return stars;
+	};
 
-  return (
-    <View {...props} className="items-end">
-      <View className="flex-row items-center py-1 rounded-full">
-        <Text className="font-bold text-xs text-global-text mr-1">{rating.toFixed(1)}/5</Text>
-        <View className="flex-row">{renderStars()}</View>
-      </View>
-      {nbUsers ? (
-        <View className="flex-row">
-          <Text className="text-xs text-secondary-text">Listed by </Text>
-          <Text className="text-xs font-bold text-secondary-text">{nbUsers}</Text>
-          <Text className="text-xs text-secondary-text"> users</Text>
-        </View>
-      ) : null}
-    </View>
-  )
-}
+	return (
+		<View {...props} className="items-end">
+			<View className="flex-row items-center py-1 rounded-full">
+				<Text className="font-bold text-xs text-global-text mr-1">
+					{rating.toFixed(1)}/5
+				</Text>
+				<View className="flex-row">{renderStars()}</View>
+			</View>
+			{nbUsers ? (
+				<View className="flex-row">
+					<Text className="text-xs text-secondary-text">Listed by </Text>
+					<Text className="text-xs font-bold text-secondary-text">
+						{nbUsers}
+					</Text>
+					<Text className="text-xs text-secondary-text"> users</Text>
+				</View>
+			) : null}
+		</View>
+	);
+};
 
-export default Rating
+export default Rating;

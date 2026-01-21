@@ -1,11 +1,13 @@
 import { useLazyQuery } from "@apollo/client/react";
+import ZoomableImage from "@components/zoomable-image";
 import { Ionicons } from "@expo/vector-icons";
 import { default as Character } from "components/character";
-import ZoomableImage from "@components/zoomable-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
+	Modal,
 	RefreshControl,
 	ScrollView,
 	Text,
@@ -13,13 +15,14 @@ import {
 	useWindowDimensions,
 	View,
 	type ViewProps,
-	Modal,
 } from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import HTML from "react-native-render-html";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+import {
+	SafeAreaView,
+	useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { graphql } from "types/gql";
 
 type AnimeDetailsProps = ViewProps;
@@ -148,8 +151,8 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 
 		return (
 			<View {...props} className="flex-1 bg-global-bg">
-			    <StatusBar style="light" />
-					<Modal
+				<StatusBar style="light" />
+				<Modal
 					visible={modalVisible}
 					transparent={true}
 					animationType="fade"
@@ -175,29 +178,29 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 					ListHeaderComponent={() => {
 						return (
 							<View>
-									<View className="relative">
-										<TouchableOpacity
-											onPress={() => {
-												setModalVisible(true);
+								<View className="relative">
+									<TouchableOpacity
+										onPress={() => {
+											setModalVisible(true);
+										}}
+										activeOpacity={0.9}
+									>
+										<Animated.Image
+											className="w-full h-[374]"
+											resizeMode="cover"
+											source={{
+												uri: imgSource,
 											}}
-											activeOpacity={0.9}
-										>
-											<Animated.Image
-												className="w-full h-[374]"
-												resizeMode="cover"
-												source={{
-													uri: imgSource,
-												}}
-											/>
-											<View className="absolute top-1/2 left-1/2 -translate-x-4 -translate-y-4 bg-black/30 rounded-full p-2">
-												<Ionicons name="expand-outline" size={24} color="white" />
-											</View>
-										</TouchableOpacity>
-										<LinearGradient
-											className="w-full h-20 absolute bottom-0 left-0"
-											colors={["transparent", "#152232"]}
 										/>
-									</View>
+										<View className="absolute top-1/2 left-1/2 -translate-x-4 -translate-y-4 bg-black/30 rounded-full p-2">
+											<Ionicons name="expand-outline" size={24} color="white" />
+										</View>
+									</TouchableOpacity>
+									<LinearGradient
+										className="w-full h-20 absolute bottom-0 left-0"
+										colors={["transparent", "#152232"]}
+									/>
+								</View>
 								<View className="flex-row justify-between items-center mx-3">
 									<View className="flex-row items-center">
 										<View>
@@ -310,7 +313,7 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 
 	return (
 		<SafeAreaView className="flex-1 bg-global-bg">
-            <StatusBar style="light" />
+			<StatusBar style="light" />
 			<Animated.Image
 				className="h-[374]"
 				resizeMode="cover"
