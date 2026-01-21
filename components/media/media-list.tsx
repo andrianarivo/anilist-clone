@@ -1,5 +1,5 @@
 import Anime from 'components/anime'
-import { MediaFragment } from 'hooks/useAnimeSearchQueries'
+import { MediaFragment } from '@hooks/use-anime-search-queries'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { type FragmentType, useFragment as getFragment } from 'types/gql'

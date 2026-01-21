@@ -1,6 +1,6 @@
-import MediaList from 'components/media/MediaList'
+import MediaList from '@components/media/media-list'
 import { Stack } from 'expo-router'
-import { useUpcomingNextSeasonAnime } from 'hooks/useAnimeSearchQueries'
+import { useUpcomingNextSeasonAnime } from '@hooks/use-anime-search-queries'
 import React from 'react'
 import { View } from 'react-native'
 import { getCurrentSeason, getNextSeason } from 'utils/date'

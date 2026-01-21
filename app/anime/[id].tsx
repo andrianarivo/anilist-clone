@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client/react";
 import { Ionicons } from "@expo/vector-icons";
 import { default as Character } from "components/character";
-import ZoomableImage from "components/ZoomableImage";
+import ZoomableImage from "@components/zoomable-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -183,7 +183,6 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 											activeOpacity={0.9}
 										>
 											<Animated.Image
-												sharedTransitionTag={`image_${mediaId}`}
 												className="w-full h-[374]"
 												resizeMode="cover"
 												source={{
@@ -313,7 +312,6 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 		<SafeAreaView className="flex-1 bg-global-bg">
             <StatusBar style="light" />
 			<Animated.Image
-				sharedTransitionTag={`image_${mediaId}`}
 				className="h-[374]"
 				resizeMode="cover"
 				source={{

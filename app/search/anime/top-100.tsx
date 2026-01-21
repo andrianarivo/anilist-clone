@@ -1,6 +1,6 @@
-import MediaList from 'components/media/MediaList'
+import MediaList from '@components/media/media-list'
 import { Stack } from 'expo-router'
-import { useTop100Anime } from 'hooks/useAnimeSearchQueries'
+import { useTop100Anime } from '@hooks/use-anime-search-queries'
 import React from 'react'
 import { View } from 'react-native'
 
