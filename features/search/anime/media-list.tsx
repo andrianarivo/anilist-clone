@@ -1,6 +1,7 @@
+import { FlashList } from "@shopify/flash-list";
 import Anime from "@components/anime";
 import { MediaFragment } from "@hooks/search/anime/fragments";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type FragmentType, useFragment as getFragment } from "types/gql";
 
@@ -46,7 +47,6 @@ const MediaList = ({
 		const media = getFragment(MediaFragment, item);
 		return (
 			<Anime
-				key={media.id}
 				mediaId={media.id.toString()}
 				uri={media.coverImage?.extraLarge || media.bannerImage || ""}
 				ratings={media.averageScore || 0}
@@ -60,10 +60,10 @@ const MediaList = ({
 
 	return (
 		<View className="flex-1 bg-global-bg">
-			<FlatList
+			<FlashList<FragmentType<typeof MediaFragment> | null | undefined>
 				data={data?.media || []}
 				renderItem={renderItem}
-				keyExtractor={(item, index) => {
+				keyExtractor={(item: FragmentType<typeof MediaFragment> | null | undefined, index: number) => {
 					if (!item) return index.toString();
 					const media = getFragment(MediaFragment, item);
 					return media.id.toString();
