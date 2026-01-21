@@ -1,52 +1,50 @@
 {
-  "expo": {
-    "name": "My Anime List",
-    "slug": "my-anime-list",
-    "scheme": "anilist-clone",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.believerbuddy.myanimelist"
-    },
-    "android": {
-      "package": "com.believerbuddy.myanimelist"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "6da9182a-8ea9-4d8a-aebd-97db36575622"
-      }
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "enableProguardInReleaseBuilds": true,
-            "extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }"
-          },
-          "ios": {}
-        }
-      ],
-      "expo-router",
-      "expo-font"
-    ],
-    "newArchEnabled": true
-  }
+	"expo": {
+		"name": "My Anime List",
+		"slug": "my-anime-list",
+		"scheme": "anilist-clone",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/images/logo.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.believerbuddy.myanimelist"
+		},
+		"android": {
+			"package": "com.believerbuddy.myanimelist"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "6da9182a-8ea9-4d8a-aebd-97db36575622"
+			}
+		},
+		"plugins": [
+			[
+				"expo-build-properties",
+				{
+					"android": {
+						"enableProguardInReleaseBuilds": true,
+						"extraProguardRules": "-keep class com.shopify.reactnative.skia.** { *; }"
+					},
+					"ios": {}
+				}
+			],
+			"expo-router",
+			"expo-font"
+		],
+		"newArchEnabled": true
+	}
 }

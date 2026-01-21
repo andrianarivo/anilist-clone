@@ -18,7 +18,8 @@
 			"@theme/*": ["theme/*"],
 			"@types/*": ["types/*"],
 			"@hooks/*": ["hooks/*"],
-			"@constants/*": ["constants/*"]
+			"@constants/*": ["constants/*"],
+			"@features/*": ["features/*"]
 		}
 	}
 }

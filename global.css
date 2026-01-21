@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .container {
-  flex: 1;
-  background-color: #552244;
-  padding: 16px;
+	flex: 1;
+	background-color: #552244;
+	padding: 16px;
 }
