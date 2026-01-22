@@ -1,7 +1,8 @@
 import { FlashList } from "@shopify/flash-list";
 import Anime from "@components/anime";
 import { MediaFragment } from "@hooks/search/anime/fragments";
-import { ActivityIndicator, Text, View } from "react-native";
+import AnimeSkeleton from "@components/anime-skeleton";
+import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type FragmentType, useFragment as getFragment } from "types/gql";
 
@@ -32,8 +33,19 @@ const MediaList = ({
 
 	if (loading && !data) {
 		return (
-			<View className="flex-1 justify-center items-center bg-global-bg">
-				<ActivityIndicator size="large" color="#3577ff" />
+			<View className="flex-1 bg-global-bg">
+				<View style={{ paddingTop }}>
+					{title && (
+						<View className="px-4 py-4 pt-2">
+							<Text className="text-3xl font-bold text-global-text">
+								{title}
+							</Text>
+						</View>
+					)}
+					{["skeleton-1", "skeleton-2", "skeleton-3"].map((id) => (
+						<AnimeSkeleton key={id} />
+					))}
+				</View>
 			</View>
 		);
 	}
@@ -84,7 +96,7 @@ const MediaList = ({
 				}
 				ListFooterComponent={
 					isLoadingMore ? (
-						<ActivityIndicator color="#3577ff" className="py-4" />
+						<AnimeSkeleton />
 					) : null
 				}
 			/>

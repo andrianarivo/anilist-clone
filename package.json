@@ -46,6 +46,7 @@
 		"graphql": "^16.10.0",
 		"nativewind": "^4.2.1",
 		"react": "19.1.0",
+		"react-content-loader": "^7.1.1",
 		"react-native": "0.81.5",
 		"react-native-blurhash": "^2.0.1",
 		"react-native-css-interop": "^0.1.5",
