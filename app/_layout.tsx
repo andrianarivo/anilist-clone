@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { customFontsToLoad } from "theme/typography";
+import { useColorScheme } from "nativewind";
 import "../global.css";
 import "react-native-reanimated";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
@@ -31,6 +32,7 @@ const client = new ApolloClient({
 
 export default function RootLayout() {
 	const [areFontsLoaded] = useFonts(customFontsToLoad);
+	const { colorScheme } = useColorScheme();
 
 	useEffect(() => {
 		if (areFontsLoaded) {
@@ -40,10 +42,14 @@ export default function RootLayout() {
 
 	useEffect(() => {
 		if (Platform.OS === "android") {
-			NavigationBar.setBackgroundColorAsync("#152232");
-			NavigationBar.setButtonStyleAsync("light");
+			NavigationBar.setBackgroundColorAsync(
+				colorScheme === "dark" ? "#152232" : "#edf1f5",
+			);
+			NavigationBar.setButtonStyleAsync(
+				colorScheme === "dark" ? "light" : "dark",
+			);
 		}
-	}, []);
+	}, [colorScheme]);
 
 	if (!areFontsLoaded) {
 		return null;
@@ -56,7 +62,7 @@ export default function RootLayout() {
 					<Stack screenOptions={{ headerShown: false }}>
 						<Stack.Screen name={"search/anime"} />
 					</Stack>
-					<StatusBar style={"light"} />
+					<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
 				</SafeAreaProvider>
 			</GestureHandlerRootView>
 		</ApolloProvider>

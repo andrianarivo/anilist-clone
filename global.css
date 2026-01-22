@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--global-bg: #edf1f5;
+	--card-bg: #fbfbfb;
+	--global-text: #152232;
+	--secondary-text: #564e4a;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--global-bg: #152232;
+		--card-bg: #151f2e;
+		--global-text: #ecf6fe;
+		--secondary-text: #acd5f2;
+	}
+}
+
+.dark {
+	--global-bg: #152232;
+	--card-bg: #151f2e;
+	--global-text: #ecf6fe;
+	--secondary-text: #acd5f2;
+}
+
 .container {
 	flex: 1;
 	background-color: #552244;

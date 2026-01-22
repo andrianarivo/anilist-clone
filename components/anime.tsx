@@ -47,7 +47,7 @@ const Anime = ({
 		>
 			<View
 				{...props}
-				className="m-2 rounded-2xl overflow-hidden shadow-sm bg-white/10"
+				className="m-2 rounded-2xl overflow-hidden shadow-sm bg-card-bg"
 			>
 				<View className="w-full aspect-video relative">
 					<Animated.Image
