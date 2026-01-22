@@ -1,14 +1,19 @@
-import { useQuery } from "@apollo/client/react";
-import { graphql } from "../../../types/gql";
+import { useQuery } from '@apollo/client/react'
+import { graphql } from '../../../types/gql'
 
 export const usePopularSeason = (options?: any) => {
-	const QUERY = graphql(`
-    query GetPopularSeasonAnime($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int) {
+  const QUERY = graphql(`
+    query GetPopularSeasonAnime(
+      $page: Int
+      $perPage: Int
+      $season: MediaSeason
+      $seasonYear: Int
+    ) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
-            hasNextPage
-            total
-            lastPage
+          hasNextPage
+          total
+          lastPage
         }
         media(
           season: $season
@@ -17,10 +22,10 @@ export const usePopularSeason = (options?: any) => {
           type: ANIME
           isAdult: false
         ) {
-          ...MediaFragment
+          ...MediaData
         }
       }
     }
-  `);
-	return useQuery(QUERY, options);
-};
+  `)
+  return useQuery(QUERY, options)
+}

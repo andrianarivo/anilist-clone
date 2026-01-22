@@ -1,7 +1,7 @@
-import { graphql } from "../../../types/gql";
+import { graphql } from 'types/gql'
 
-export const MediaFragment = graphql(`
-  fragment MediaFragment on Media {
+export const MediaData = graphql(`
+  fragment MediaData on Media {
     id
     title {
       userPreferred
@@ -55,4 +55,4 @@ export const MediaFragment = graphql(`
       }
     }
   }
-`);
+`)
