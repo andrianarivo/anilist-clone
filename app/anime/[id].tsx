@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client/react'
+import { useAnimeDetails } from 'hooks/anime/use-anime-details'
 import ZoomableImage from '@components/zoomable-image'
 import { Ionicons } from '@expo/vector-icons'
 import { default as Character } from 'components/character'
@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useColorScheme } from 'nativewind'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Modal,
   RefreshControl,
@@ -21,7 +21,7 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 import HTML from 'react-native-render-html'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { graphql } from 'types/gql'
+import { AnimeDetailsDataFragment } from 'types/gql/graphql'
 
 type AnimeDetailsProps = ViewProps
 
@@ -32,46 +32,6 @@ type AnimeCharacter = {
   imageUri: string
 }
 
-const useLazyAnimeDetails = () => {
-  const QUERY = graphql(`
-    query GetMedia($id: Int) {
-      Media(id: $id) {
-        id
-        studios(isMain: true) {
-          nodes {
-            name
-          }
-        }
-        coverImage {
-          extraLarge
-        }
-        startDate {
-          year
-        }
-        popularity
-        averageScore
-        description(asHtml: true)
-        title {
-          userPreferred
-        }
-        characters(role: MAIN) {
-          nodes {
-            id
-            name {
-              userPreferred
-            }
-            gender
-            image {
-              medium
-            }
-          }
-        }
-      }
-    }
-  `)
-  return useLazyQuery(QUERY)
-}
-
 const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
   const { colorScheme } = useColorScheme()
   const _router = useRouter()
@@ -79,32 +39,22 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
     id: string
     imgSource: string
   }>()
-  const mediaId = id
-  const [getAnimeDetails, animeDetails] = useLazyAnimeDetails()
+  const mediaId = id ? Number(id) : undefined
+  const animeDetails = useAnimeDetails(mediaId as number)
   const { width, height } = useWindowDimensions()
   const insets = useSafeAreaInsets()
   const [modalVisible, setModalVisible] = useState(false)
-
-  useEffect(() => {
-    if (mediaId) {
-      getAnimeDetails({ variables: { id: Number(mediaId) } })
-    }
-  }, [getAnimeDetails, mediaId])
 
   if (animeDetails.error) {
     return (
       <SafeAreaView className="flex-1 bg-global-bg">
         <StatusBar style="light" />
         <ScrollView
-          contentContainerStyle={{
-            flex: 1,
-          }}
+          contentContainerStyle={{ flex: 1 }}
           refreshControl={
             <RefreshControl
               tintColor={'white'}
-              onRefresh={() => {
-                getAnimeDetails({ variables: { id: Number(mediaId) } })
-              }}
+              onRefresh={() => animeDetails.refetch()}
               refreshing={animeDetails.loading}
             />
           }
@@ -118,34 +68,30 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
   }
 
   if (animeDetails.data?.Media) {
-    const characters: AnimeCharacter[] = []
-    const nodes = animeDetails.data.Media.characters?.nodes ?? []
-
-    for (const node of nodes) {
-      if (node) {
-        characters.push({
-          id: String(node.id),
-          name: node.name?.userPreferred ?? 'Unknown',
-          gender: node.gender ?? 'Unknown',
-          imageUri: node.image?.medium ?? '',
-        })
-      }
-    }
+    const media = animeDetails.data.Media as AnimeDetailsDataFragment
+    const characters = (media.characters?.nodes ?? [])
+      .filter((node): node is NonNullable<typeof node> => !!node)
+      .map((node) => ({
+        id: String(node.id),
+        name: node.name?.userPreferred ?? 'Unknown',
+        gender: node.gender ?? 'Unknown',
+        imageUri: node.image?.medium ?? '',
+      }))
 
     const animeDetailsData = {
-      studio: animeDetails.data.Media.studios?.nodes?.[0]?.name ?? 'Unknown',
-      title: animeDetails.data.Media.title?.userPreferred ?? 'Unknown',
-      description: animeDetails.data.Media.description ?? '',
-      year: animeDetails.data.Media.startDate?.year ?? 0,
+      studio: media.studios?.nodes?.[0]?.name ?? 'Unknown',
+      title: media.title?.userPreferred ?? 'Unknown',
+      description: media.description ?? '',
+      year: media.startDate?.year ?? 0,
       score: Array.from(
         {
-          length: Math.round((animeDetails.data.Media.averageScore || 0) / 20),
+          length: Math.round((media.averageScore || 0) / 20),
         },
         (_, i) => i,
       ),
-      characters: characters,
-      popularity: animeDetails.data.Media.popularity,
-      coverImage: animeDetails.data.Media.coverImage?.extraLarge,
+      characters,
+      popularity: media.popularity,
+      coverImage: media.coverImage?.extraLarge,
     }
 
     return (
