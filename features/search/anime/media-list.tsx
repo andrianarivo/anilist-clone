@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import Anime from "@components/anime";
-import { MediaFragment } from "@hooks/search/anime/fragments";
+import { MediaDataFragmentDoc } from "types/gql/graphql";
 import AnimeSkeleton from "@components/anime-skeleton";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,7 +8,7 @@ import { type FragmentType, useFragment as getFragment } from "types/gql";
 
 type Props = {
 	data?: {
-		media?: (FragmentType<typeof MediaFragment> | null | undefined)[] | null;
+		media?: (FragmentType<typeof MediaDataFragmentDoc> | null | undefined)[] | null;
 		pageInfo?: {
 			hasNextPage?: boolean | null;
 			total?: number | null;
@@ -53,10 +53,10 @@ const MediaList = ({
 	const renderItem = ({
 		item,
 	}: {
-		item: FragmentType<typeof MediaFragment> | null | undefined;
+		item: FragmentType<typeof MediaDataFragmentDoc> | null | undefined;
 	}) => {
 		if (!item) return null;
-		const media = getFragment(MediaFragment, item);
+		const media = getFragment(MediaDataFragmentDoc, item);
 		return (
 			<Anime
 				mediaId={media.id.toString()}
@@ -72,12 +72,12 @@ const MediaList = ({
 
 	return (
 		<View className="flex-1 bg-global-bg">
-			<FlashList<FragmentType<typeof MediaFragment> | null | undefined>
+			<FlashList<FragmentType<typeof MediaDataFragmentDoc> | null | undefined>
 				data={data?.media || []}
 				renderItem={renderItem}
-				keyExtractor={(item: FragmentType<typeof MediaFragment> | null | undefined, index: number) => {
+				keyExtractor={(item: FragmentType<typeof MediaDataFragmentDoc> | null | undefined, index: number) => {
 					if (!item) return index.toString();
-					const media = getFragment(MediaFragment, item);
+					const media = getFragment(MediaDataFragmentDoc, item);
 					return media.id.toString();
 				}}
 				onEndReached={onEndReached}
