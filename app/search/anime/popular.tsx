@@ -1,11 +1,13 @@
 import MediaList from "@features/search/anime/media-list";
 import { useAllTimePopular } from "@hooks/search/anime/use-all-time-popular";
+import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
 import React from "react";
 import { View } from "react-native";
 
 export default function PopularScreen() {
 	const [fetchMoreLoading, setFetchMoreLoading] = React.useState(false);
 	const pageRef = React.useRef(1);
+	const { filters, setFilters } = useMediaFilters();
 	const { data, loading, fetchMore } = useAllTimePopular({
 		variables: { page: 1, perPage: 20 },
 	});
@@ -51,7 +53,10 @@ export default function PopularScreen() {
 				onEndReached={onEndReached}
 				isLoadingMore={fetchMoreLoading}
 				title="All Time Popular"
+				filters={filters}
+				onFiltersChange={setFilters}
 			/>
 		</View>
 	);
 }
+

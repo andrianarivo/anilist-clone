@@ -1,27 +1,16 @@
 import MediaList from "@features/search/anime/media-list";
 import { useTrending } from "@hooks/search/anime/use-trending";
+import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
 import React from "react";
 import { View } from "react-native";
 
 export default function TrendingScreen() {
 	const [fetchMoreLoading, setFetchMoreLoading] = React.useState(false);
+	const { filters, setFilters } = useMediaFilters();
 	const { data, loading, fetchMore } = useTrending({
 		variables: { page: 1, perPage: 20 },
 	});
 
-	/* Removed unused handleLoadMore */
-
-	// Actually, I made a mistake in the fragment, I didn't include currentPage.
-	// However, I can maintain a ref or state for the page number.
-	// Or better, let's look at how to merge the data.
-	// With Apollo's fetchMore, we typically pass the new variables.
-	// I will add currentPage to the fragment to be sure? No, I can't change it easily without regeneration.
-
-	// Let's implement a simple page counter in state since I know I start at 1.
-	// Actually, checking data.Page?.media length is strictly correct but page number is safer.
-
-	// Let's rely on data length validation? No.
-	// Let's use a ref for the current page since we are incrementing.
 	const pageRef = React.useRef(1);
 
 	const onEndReached = async () => {
@@ -36,7 +25,7 @@ export default function TrendingScreen() {
 				variables: { page: nextPage },
 				updateQuery: (previousResult, { fetchMoreResult }) => {
 					if (!fetchMoreResult) return previousResult;
-					pageRef.current = nextPage; // Update only on success
+					pageRef.current = nextPage;
 					return {
 						...previousResult,
 						Page: {
@@ -65,7 +54,10 @@ export default function TrendingScreen() {
 				onEndReached={onEndReached}
 				isLoadingMore={fetchMoreLoading}
 				title="Trending Now"
+				filters={filters}
+				onFiltersChange={setFilters}
 			/>
 		</View>
 	);
 }
+

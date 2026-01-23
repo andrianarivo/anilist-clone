@@ -1,5 +1,6 @@
 import MediaList from "@features/search/anime/media-list";
 import { useUpcomingNextSeason } from "@hooks/search/anime/use-upcoming-next-season";
+import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
 import React from "react";
 import { View } from "react-native";
 import { getCurrentSeason, getNextSeason } from "utils/date";
@@ -7,6 +8,7 @@ import { getCurrentSeason, getNextSeason } from "utils/date";
 export default function NextSeasonScreen() {
 	const [fetchMoreLoading, setFetchMoreLoading] = React.useState(false);
 	const pageRef = React.useRef(1);
+	const { filters, setFilters } = useMediaFilters();
 
 	const { season: nextSeason, year: nextYear } = React.useMemo(() => {
 		const current = getCurrentSeason();
@@ -58,7 +60,10 @@ export default function NextSeasonScreen() {
 				onEndReached={onEndReached}
 				isLoadingMore={fetchMoreLoading}
 				title="Next Season"
+				filters={filters}
+				onFiltersChange={setFilters}
 			/>
 		</View>
 	);
 }
+

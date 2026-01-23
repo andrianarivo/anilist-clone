@@ -1,11 +1,13 @@
 import MediaList from "@features/search/anime/media-list";
 import { useTop100 } from "@hooks/search/anime/use-top-100";
+import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
 import React from "react";
 import { View } from "react-native";
 
 export default function Top100Screen() {
 	const [fetchMoreLoading, setFetchMoreLoading] = React.useState(false);
 	const pageRef = React.useRef(1);
+	const { filters, setFilters } = useMediaFilters();
 	const { data, loading, fetchMore } = useTop100({
 		variables: { page: 1, perPage: 20 },
 	});
@@ -51,7 +53,10 @@ export default function Top100Screen() {
 				onEndReached={onEndReached}
 				isLoadingMore={fetchMoreLoading}
 				title="Top 100 Anime"
+				filters={filters}
+				onFiltersChange={setFilters}
 			/>
 		</View>
 	);
 }
+
