@@ -84,7 +84,7 @@ const MediaList = ({
 									onPress={openFilters}
 									className="p-2 flex-row items-center gap-2 rounded-lg bg-card-bg"
 								>
-									<Ionicons name="filter" />
+									<Ionicons name="filter" size={16} />
 									<Text className="text-global-text text-lg">
 										Filter
 									</Text>
@@ -146,7 +146,7 @@ const MediaList = ({
 									onPress={openFilters}
 									className={`p-2 flex-row items-center gap-2 rounded-lg ${hasActiveFilters ? "bg-primary" : "bg-card-bg"}`}
 								>
-									<Ionicons name="filter" />
+									<Ionicons name="filter" size={16} />
 									<Text className="text-global-text text-lg">
 										Filter
 									</Text>
