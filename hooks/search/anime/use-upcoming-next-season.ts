@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client/react'
-import { graphql } from '../../../types/gql'
+import { useQuery } from "@apollo/client/react";
+import { graphql } from "../../../types/gql";
 
 export const useUpcomingNextSeason = (options?: any) => {
-  const QUERY = graphql(`
+	const QUERY = graphql(`
     query GetUpcomingNextSeasonAnime(
       $page: Int
       $perPage: Int
@@ -26,6 +26,6 @@ export const useUpcomingNextSeason = (options?: any) => {
         }
       }
     }
-  `)
-  return useQuery(QUERY, options)
-}
+  `);
+	return useQuery(QUERY, options);
+};

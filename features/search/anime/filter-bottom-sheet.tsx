@@ -1,14 +1,17 @@
-import { forwardRef, useCallback, useMemo } from "react";
-import { View, Text, Pressable, TextInput } from "react-native";
 import BottomSheet, {
-	BottomSheetScrollView,
 	BottomSheetBackdrop,
 	type BottomSheetBackdropProps,
+	BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { FilterSelect, FilterMultiSelect } from "../../../components/filter-select";
+import { forwardRef, useCallback, useMemo } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
 import type { MediaFilters } from "types/filters";
 import { AVAILABLE_GENRES, YEAR_OPTIONS } from "types/filters";
 import { MediaFormat, MediaSeason, MediaStatus } from "types/gql/graphql";
+import {
+	FilterMultiSelect,
+	FilterSelect,
+} from "../../../components/filter-select";
 
 type FilterBottomSheetProps = {
 	filters: MediaFilters;

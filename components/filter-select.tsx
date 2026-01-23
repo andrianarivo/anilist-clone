@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
-	View,
-	Text,
 	Pressable,
 	ScrollView,
+	Text,
+	View,
 	type ViewStyle,
 } from "react-native";
 
@@ -41,7 +41,9 @@ export function FilterSelect<T extends string | number>({
 				className="bg-card-bg border border-card-border rounded-lg px-4 py-3 flex-row justify-between items-center"
 			>
 				<Text
-					className={value !== undefined ? "text-global-text" : "text-secondary-text"}
+					className={
+						value !== undefined ? "text-global-text" : "text-secondary-text"
+					}
 				>
 					{value !== undefined ? renderOption(value) : placeholder}
 				</Text>
@@ -119,7 +121,9 @@ export function FilterMultiSelect({
 			>
 				<Text
 					className={
-						value && value.length > 0 ? "text-global-text" : "text-secondary-text"
+						value && value.length > 0
+							? "text-global-text"
+							: "text-secondary-text"
 					}
 					numberOfLines={1}
 				>
@@ -148,7 +152,9 @@ export function FilterMultiSelect({
 												: "border-card-border"
 										}`}
 									>
-										{isSelected && <Text className="text-white text-xs">✓</Text>}
+										{isSelected && (
+											<Text className="text-white text-xs">✓</Text>
+										)}
 									</View>
 									<Text
 										className={isSelected ? "text-primary" : "text-global-text"}

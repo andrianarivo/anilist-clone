@@ -1,6 +1,6 @@
 import MediaList from "@features/search/anime/media-list";
-import { useTop100 } from "@hooks/search/anime/use-top-100";
 import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
+import { useTop100 } from "@hooks/search/anime/use-top-100";
 import React from "react";
 import { View } from "react-native";
 
@@ -59,4 +59,3 @@ export default function Top100Screen() {
 		</View>
 	);
 }
-

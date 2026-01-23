@@ -1,4 +1,4 @@
-import { graphql } from 'types/gql'
+import { graphql } from "types/gql";
 
 export const AnimeDetailsData = graphql(`
   fragment AnimeDetailsData on Media {
@@ -33,4 +33,4 @@ export const AnimeDetailsData = graphql(`
       }
     }
   }
-`)
+`);

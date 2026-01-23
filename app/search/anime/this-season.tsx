@@ -1,6 +1,6 @@
 import MediaList from "@features/search/anime/media-list";
-import { usePopularSeason } from "@hooks/search/anime/use-popular-season";
 import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
+import { usePopularSeason } from "@hooks/search/anime/use-popular-season";
 import React from "react";
 import { View } from "react-native";
 import { getCurrentSeason } from "utils/date";
@@ -62,4 +62,3 @@ export default function ThisSeasonScreen() {
 		</View>
 	);
 }
-

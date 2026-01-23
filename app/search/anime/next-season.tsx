@@ -1,6 +1,6 @@
 import MediaList from "@features/search/anime/media-list";
-import { useUpcomingNextSeason } from "@hooks/search/anime/use-upcoming-next-season";
 import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
+import { useUpcomingNextSeason } from "@hooks/search/anime/use-upcoming-next-season";
 import React from "react";
 import { View } from "react-native";
 import { getCurrentSeason, getNextSeason } from "utils/date";
@@ -66,4 +66,3 @@ export default function NextSeasonScreen() {
 		</View>
 	);
 }
-

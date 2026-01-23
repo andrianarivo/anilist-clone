@@ -1,10 +1,10 @@
-import { useAnimeDetails } from 'hooks/anime/use-anime-details'
 import ZoomableImage from '@components/zoomable-image'
 import { Ionicons } from '@expo/vector-icons'
-import { default as Character } from 'components/character'
+import { default as Character } from 'features/anime/character'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { useAnimeDetails } from 'hooks/anime/use-anime-details'
 import { useColorScheme } from 'nativewind'
 import { useState } from 'react'
 import {
@@ -21,7 +21,7 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 import HTML from 'react-native-render-html'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { AnimeDetailsDataFragment } from 'types/gql/graphql'
+import type { AnimeDetailsDataFragment } from 'types/gql/graphql'
 
 type AnimeDetailsProps = ViewProps
 

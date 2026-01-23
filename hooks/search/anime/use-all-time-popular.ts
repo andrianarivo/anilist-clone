@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client/react'
-import { graphql } from 'types/gql'
+import { useQuery } from "@apollo/client/react";
+import { graphql } from "types/gql";
 
 export const useAllTimePopular = (options?: any) => {
-  const QUERY = graphql(`
+	const QUERY = graphql(`
     query GetAllTimePopularAnime($page: Int, $perPage: Int) {
       Page(page: $page, perPage: $perPage) {
         pageInfo {
@@ -15,6 +15,6 @@ export const useAllTimePopular = (options?: any) => {
         }
       }
     }
-  `)
-  return useQuery(QUERY, options)
-}
+  `);
+	return useQuery(QUERY, options);
+};

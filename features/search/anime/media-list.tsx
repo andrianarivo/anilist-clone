@@ -1,19 +1,22 @@
-import { useRef, useCallback } from "react";
-import { FlashList } from "@shopify/flash-list";
-import Anime from "@features/anime/anime";
-import { MediaDataFragmentDoc } from "types/gql/graphql";
-import AnimeSkeleton from "@features/anime/anime-skeleton";
-import { Text, View, Pressable } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { type FragmentType, useFragment as getFragment } from "types/gql";
-import type BottomSheet from "@gorhom/bottom-sheet";
-import FilterBottomSheet from "@features/search/anime/filter-bottom-sheet";
-import type { MediaFilters } from "types/filters";
 import { Ionicons } from "@expo/vector-icons";
+import Anime from "@features/anime/anime";
+import AnimeSkeleton from "@features/anime/anime-skeleton";
+import FilterBottomSheet from "@features/search/anime/filter-bottom-sheet";
+import type BottomSheet from "@gorhom/bottom-sheet";
+import { FlashList } from "@shopify/flash-list";
+import { useCallback, useRef } from "react";
+import { Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { MediaFilters } from "types/filters";
+import { type FragmentType, useFragment as getFragment } from "types/gql";
+import { MediaDataFragmentDoc } from "types/gql/graphql";
+import Button from "@/components/button";
 
 type Props = {
 	data?: {
-		media?: (FragmentType<typeof MediaDataFragmentDoc> | null | undefined)[] | null;
+		media?:
+			| (FragmentType<typeof MediaDataFragmentDoc> | null | undefined)[]
+			| null;
 		pageInfo?: {
 			hasNextPage?: boolean | null;
 			total?: number | null;
@@ -80,15 +83,20 @@ const MediaList = ({
 								{title}
 							</Text>
 							{onFiltersChange && (
-								<Pressable
+								<Button
+									variant="secondary"
 									onPress={openFilters}
-									className="p-2 flex-row items-center gap-2 rounded-lg bg-card-bg"
+									icon={
+										<Ionicons
+											name="filter"
+											size={16}
+											className="text-global-text"
+										/>
+									}
+									className="py-2"
 								>
-									<Ionicons name="filter" size={16} />
-									<Text className="text-global-text text-lg">
-										Filter
-									</Text>
-								</Pressable>
+									Filter
+								</Button>
 							)}
 						</View>
 					)}
@@ -125,7 +133,10 @@ const MediaList = ({
 			<FlashList<FragmentType<typeof MediaDataFragmentDoc> | null | undefined>
 				data={data?.media || []}
 				renderItem={renderItem}
-				keyExtractor={(item: FragmentType<typeof MediaDataFragmentDoc> | null | undefined, index: number) => {
+				keyExtractor={(
+					item: FragmentType<typeof MediaDataFragmentDoc> | null | undefined,
+					index: number,
+				) => {
 					if (!item) return index.toString();
 					const media = getFragment(MediaDataFragmentDoc, item);
 					return media.id.toString();
@@ -142,24 +153,25 @@ const MediaList = ({
 								{title}
 							</Text>
 							{onFiltersChange && (
-								<Pressable
+								<Button
+									variant={hasActiveFilters ? "primary" : "secondary"}
 									onPress={openFilters}
-									className={`p-2 flex-row items-center gap-2 rounded-lg ${hasActiveFilters ? "bg-primary" : "bg-card-bg"}`}
+									icon={
+										<Ionicons
+											name="filter"
+											size={16}
+											className="text-global-text"
+										/>
+									}
+									className="py-2"
 								>
-									<Ionicons name="filter" size={16} />
-									<Text className="text-global-text text-lg">
-										Filter
-									</Text>
-								</Pressable>
+									Filter
+								</Button>
 							)}
 						</View>
 					) : null
 				}
-				ListFooterComponent={
-					isLoadingMore ? (
-						<AnimeSkeleton />
-					) : null
-				}
+				ListFooterComponent={isLoadingMore ? <AnimeSkeleton /> : null}
 			/>
 
 			{onFiltersChange && (

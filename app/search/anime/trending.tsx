@@ -1,6 +1,6 @@
 import MediaList from "@features/search/anime/media-list";
-import { useTrending } from "@hooks/search/anime/use-trending";
 import { useMediaFilters } from "@hooks/search/anime/use-media-filters";
+import { useTrending } from "@hooks/search/anime/use-trending";
 import React from "react";
 import { View } from "react-native";
 
@@ -60,4 +60,3 @@ export default function TrendingScreen() {
 		</View>
 	);
 }
-
