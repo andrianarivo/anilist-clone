@@ -5,7 +5,7 @@ import BottomSheet, {
 	BottomSheetBackdrop,
 	type BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
-import { FilterSelect, FilterMultiSelect } from "./filter-select";
+import { FilterSelect, FilterMultiSelect } from "../../../components/filter-select";
 import type { MediaFilters } from "types/filters";
 import { AVAILABLE_GENRES, YEAR_OPTIONS } from "types/filters";
 import { MediaFormat, MediaSeason, MediaStatus } from "types/gql/graphql";

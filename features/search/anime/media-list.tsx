@@ -1,13 +1,13 @@
 import { useRef, useCallback } from "react";
 import { FlashList } from "@shopify/flash-list";
-import Anime from "@components/anime";
+import Anime from "@features/anime/anime";
 import { MediaDataFragmentDoc } from "types/gql/graphql";
-import AnimeSkeleton from "@components/anime-skeleton";
+import AnimeSkeleton from "@features/anime/anime-skeleton";
 import { Text, View, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type FragmentType, useFragment as getFragment } from "types/gql";
 import type BottomSheet from "@gorhom/bottom-sheet";
-import FilterBottomSheet from "@components/filter-bottom-sheet";
+import FilterBottomSheet from "@features/search/anime/filter-bottom-sheet";
 import type { MediaFilters } from "types/filters";
 import { Ionicons } from "@expo/vector-icons";
 
