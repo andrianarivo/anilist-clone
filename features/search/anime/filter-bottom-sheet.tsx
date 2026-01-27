@@ -6,8 +6,13 @@ import BottomSheet, {
 import { forwardRef, useCallback, useMemo } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import type { MediaFilters } from "types/filters";
-import { AVAILABLE_GENRES, YEAR_OPTIONS } from "types/filters";
-import { MediaFormat, MediaSeason, MediaStatus } from "types/gql/graphql";
+import {
+	AVAILABLE_GENRES,
+	FORMAT_OPTIONS,
+	SEASON_OPTIONS,
+	STATUS_OPTIONS,
+	YEAR_OPTIONS,
+} from "types/filters";
 import {
 	FilterMultiSelect,
 	FilterSelect,
@@ -27,30 +32,6 @@ const formatEnumLabel = (value: string): string => {
 		.replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
-const FORMAT_OPTIONS = [
-	MediaFormat.Tv,
-	MediaFormat.TvShort,
-	MediaFormat.Movie,
-	MediaFormat.Special,
-	MediaFormat.Ova,
-	MediaFormat.Ona,
-	MediaFormat.Music,
-];
-
-const SEASON_OPTIONS = [
-	MediaSeason.Winter,
-	MediaSeason.Spring,
-	MediaSeason.Summer,
-	MediaSeason.Fall,
-];
-
-const STATUS_OPTIONS = [
-	MediaStatus.Releasing,
-	MediaStatus.Finished,
-	MediaStatus.NotYetReleased,
-	MediaStatus.Cancelled,
-	MediaStatus.Hiatus,
-];
 
 const FilterBottomSheet = forwardRef<BottomSheet, FilterBottomSheetProps>(
 	({ filters, onFiltersChange, onApply, onReset }, ref) => {

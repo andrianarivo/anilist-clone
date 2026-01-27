@@ -1,4 +1,4 @@
-import type { MediaFormat, MediaSeason, MediaStatus } from "./gql/graphql";
+import { MediaFormat, MediaSeason, MediaStatus } from "./gql/graphql";
 
 export type MediaFilters = {
 	search?: string;
@@ -8,6 +8,31 @@ export type MediaFilters = {
 	format?: MediaFormat;
 	status?: MediaStatus;
 };
+
+export const FORMAT_OPTIONS = [
+	MediaFormat.Tv,
+	MediaFormat.TvShort,
+	MediaFormat.Movie,
+	MediaFormat.Special,
+	MediaFormat.Ova,
+	MediaFormat.Ona,
+	MediaFormat.Music,
+];
+
+export const SEASON_OPTIONS = [
+	MediaSeason.Winter,
+	MediaSeason.Spring,
+	MediaSeason.Summer,
+	MediaSeason.Fall,
+];
+
+export const STATUS_OPTIONS = [
+	MediaStatus.Releasing,
+	MediaStatus.Finished,
+	MediaStatus.NotYetReleased,
+	MediaStatus.Cancelled,
+	MediaStatus.Hiatus,
+];
 
 export const AVAILABLE_GENRES = [
 	"Action",

@@ -11,6 +11,14 @@ import type { MediaFilters } from "types/filters";
 import { type FragmentType, useFragment as getFragment } from "types/gql";
 import { MediaDataFragmentDoc } from "types/gql/graphql";
 import Button from "@/components/button";
+import FilterChip from "@/components/filter-chip";
+import {
+	FORMAT_OPTIONS,
+	SEASON_OPTIONS,
+	STATUS_OPTIONS,
+	YEAR_OPTIONS,
+} from "types/filters";
+import { ScrollView } from "react-native";
 
 type Props = {
 	data?: {
@@ -148,25 +156,71 @@ const MediaList = ({
 				}}
 				ListHeaderComponent={
 					title ? (
-						<View className="px-4 py-4 pt-2 flex-row justify-between items-center">
-							<Text className="text-3xl font-bold text-global-text">
-								{title}
-							</Text>
+						<View>
+							<View className="px-4 py-4 pt-2 flex-row justify-between items-center">
+								<Text className="text-3xl font-bold text-global-text">
+									{title}
+								</Text>
+								{onFiltersChange && (
+									<Button
+										variant={hasActiveFilters ? "primary" : "secondary"}
+										onPress={openFilters}
+										icon={
+											<Ionicons
+												name="filter"
+												size={16}
+												className="text-global-text"
+											/>
+										}
+										className="py-2"
+									>
+										Filter
+									</Button>
+								)}
+							</View>
 							{onFiltersChange && (
-								<Button
-									variant={hasActiveFilters ? "primary" : "secondary"}
-									onPress={openFilters}
-									icon={
-										<Ionicons
-											name="filter"
-											size={16}
-											className="text-global-text"
-										/>
-									}
-									className="py-2"
+								<ScrollView
+									horizontal
+									showsHorizontalScrollIndicator={false}
+									contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 8 }}
 								>
-									Filter
-								</Button>
+									<FilterChip
+										label="Year"
+										value={filters.year || null}
+										items={YEAR_OPTIONS.map((y) => ({
+											label: y.toString(),
+											value: y,
+										}))}
+										onValueChange={(v) => onFiltersChange({ ...filters, year: v || undefined })}
+									/>
+									<FilterChip
+										label="Season"
+										value={filters.season || null}
+										items={SEASON_OPTIONS.map((s) => ({
+											label: s.toLowerCase().charAt(0).toUpperCase() + s.toLowerCase().slice(1),
+											value: s,
+										}))}
+										onValueChange={(v) => onFiltersChange({ ...filters, season: v || undefined })}
+									/>
+									<FilterChip
+										label="Format"
+										value={filters.format || null}
+										items={FORMAT_OPTIONS.map((f) => ({
+											label: f.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+											value: f,
+										}))}
+										onValueChange={(v) => onFiltersChange({ ...filters, format: v || undefined })}
+									/>
+									<FilterChip
+										label="Status"
+										value={filters.status || null}
+										items={STATUS_OPTIONS.map((s) => ({
+											label: s.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+											value: s,
+										}))}
+										onValueChange={(v) => onFiltersChange({ ...filters, status: v || undefined })}
+									/>
+								</ScrollView>
 							)}
 						</View>
 					) : null
