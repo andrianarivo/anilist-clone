@@ -8,6 +8,7 @@ import { type FragmentType, useFragment as getFragment } from 'types/gql'
 import { MediaDataFragmentDoc } from 'types/gql/graphql'
 import FilterChip from '@/components/filter-chip'
 import {
+  AVAILABLE_GENRES,
   FORMAT_OPTIONS,
   SEASON_OPTIONS,
   STATUS_OPTIONS,
@@ -171,6 +172,21 @@ const MediaList = ({
                     onValueChange={(v) =>
                       onFiltersChange({ ...filters, status: v || undefined })
                     }
+                  />
+                  <FilterChip
+                    label="Genres"
+                    value={filters.genres || []}
+                    items={AVAILABLE_GENRES.map((g) => ({
+                      label: g,
+                      value: g,
+                    }))}
+                    onValueChange={(v) =>
+                      onFiltersChange({
+                        ...filters,
+                        genres: v.length > 0 ? v : undefined,
+                      })
+                    }
+                    multiple
                   />
                 </ScrollView>
               )}

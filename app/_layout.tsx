@@ -9,6 +9,7 @@ import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { customFontsToLoad } from "theme/typography";
 import "../global.css";
@@ -59,10 +60,12 @@ export default function RootLayout() {
 		<ApolloProvider client={client}>
 			<GestureHandlerRootView className="flex-1 bg-global-bg">
 				<SafeAreaProvider>
-					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={"search/anime"} />
-					</Stack>
-					<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+					<BottomSheetModalProvider>
+						<Stack screenOptions={{ headerShown: false }}>
+							<Stack.Screen name={"search/anime"} />
+						</Stack>
+						<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+					</BottomSheetModalProvider>
 				</SafeAreaProvider>
 			</GestureHandlerRootView>
 		</ApolloProvider>
