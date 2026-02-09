@@ -1,13 +1,17 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import Button from "./button";
 import {
 	BottomSheetModal,
 	BottomSheetBackdrop,
 	BottomSheetFlatList,
+	BottomSheetFooter,
+	type BottomSheetFooterProps,
 } from "@gorhom/bottom-sheet";
 import { useColorScheme } from "nativewind";
 import { cn } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { chipStyles, labelStyles, valueStyles } from "./filter-chip-styles";
 
 const THEME_COLORS = {
@@ -53,7 +57,9 @@ const FilterChipMulti = <T extends string | number>({
 }: FilterChipMultiProps<T>) => {
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
 	const [selectedValues, setSelectedValues] = useState<T[]>(value);
+	const selectedValuesRef = useRef<T[]>(value);
 	const { colorScheme } = useColorScheme();
+	const { bottom: bottomInset } = useSafeAreaInsets();
 
 	const snapPoints = useMemo(() => ["50%", "70%"], []);
 	const colors = THEME_COLORS[colorScheme === "dark" ? "dark" : "light"];
@@ -81,20 +87,21 @@ const FilterChipMulti = <T extends string | number>({
 
 	const handleToggleItem = (itemValue: T) => {
 		setSelectedValues((prev) => {
-			if (prev.includes(itemValue)) {
-				return prev.filter((v) => v !== itemValue);
-			}
-			return [...prev, itemValue];
+			const next = prev.includes(itemValue)
+				? prev.filter((v) => v !== itemValue)
+				: [...prev, itemValue];
+			selectedValuesRef.current = next;
+			return next;
 		});
 	};
 
 	const handleClear = () => {
 		setSelectedValues([]);
+		selectedValuesRef.current = [];
 	};
 
-	const handleApply = () => {
-		onValueChange(selectedValues);
-		handleCloseSheet();
+	const handleDismiss = () => {
+		onValueChange(selectedValuesRef.current);
 	};
 
 	const renderBackdrop = useCallback(
@@ -140,6 +147,25 @@ const FilterChipMulti = <T extends string | number>({
 		[selectedValues, colors]
 	);
 
+	const renderFooter = useCallback(
+		(props: BottomSheetFooterProps) => (
+			<BottomSheetFooter {...props} bottomInset={bottomInset}>
+				<View
+					className="flex-row items-center justify-between px-4 py-4 bg-card-bg"
+					style={{ borderTopWidth: 1, borderTopColor: colors.border }}
+				>
+					<Button variant="secondary" onPress={handleClear}>
+						Clear All
+					</Button>
+					<Button variant="primary" onPress={handleCloseSheet}>
+						{`Apply${selectedValues.length > 0 ? ` (${selectedValues.length})` : ""}`}
+					</Button>
+				</View>
+			</BottomSheetFooter>
+		),
+		[selectedValues, colors]
+	);
+
 	return (
 		<View className={cn("m-1", className)}>
 			<TouchableOpacity onPress={handleOpenSheet} activeOpacity={0.7}>
@@ -160,8 +186,10 @@ const FilterChipMulti = <T extends string | number>({
 				snapPoints={snapPoints}
 				enablePanDownToClose
 				backdropComponent={renderBackdrop}
+				onDismiss={handleDismiss}
 				backgroundStyle={{ backgroundColor: colors.background }}
 				handleIndicatorStyle={{ backgroundColor: colors.handleIndicator }}
+				footerComponent={renderFooter}
 			>
 				{/* Header */}
 				<View
@@ -181,33 +209,8 @@ const FilterChipMulti = <T extends string | number>({
 					keyExtractor={(item: FilterChipItem<T>) => String(item.value)}
 					renderItem={renderItem}
 					extraData={selectedValues}
-					contentContainerStyle={{ paddingBottom: 80 }}
+					contentContainerStyle={{ paddingBottom: 80 + bottomInset }}
 				/>
-
-				{/* Footer */}
-				<View
-					className="absolute bottom-0 left-0 right-0 flex-row items-center justify-between px-4 py-4 bg-card-bg"
-					style={{ borderTopWidth: 1, borderTopColor: colors.border }}
-				>
-					<TouchableOpacity
-						onPress={handleClear}
-						className="px-4 py-2 rounded-lg bg-neutral-700"
-						activeOpacity={0.7}
-					>
-						<Text className="text-sm font-medium text-global-text">
-							Clear All
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={handleApply}
-						className="px-6 py-2 rounded-lg bg-primary"
-						activeOpacity={0.7}
-					>
-						<Text className="text-sm font-bold text-white">
-							Apply{selectedValues.length > 0 ? ` (${selectedValues.length})` : ""}
-						</Text>
-					</TouchableOpacity>
-				</View>
 			</BottomSheetModal>
 		</View>
 	);

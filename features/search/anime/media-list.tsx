@@ -181,7 +181,7 @@ const MediaList = ({
                       value: g,
                     }))}
                     onValueChange={(v) =>
-                      onFiltersChange({
+                      onFiltersChange!({
                         ...filters,
                         genres: v.length > 0 ? v : undefined,
                       })
