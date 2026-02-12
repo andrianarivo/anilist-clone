@@ -1,4 +1,4 @@
-import { MediaFormat, MediaSeason, MediaStatus } from "./gql/graphql";
+import { MediaFormat, MediaSeason, MediaSort, MediaStatus } from "./gql/graphql";
 
 export type MediaFilters = {
 	search?: string;
@@ -7,6 +7,7 @@ export type MediaFilters = {
 	season?: MediaSeason;
 	format?: MediaFormat;
 	status?: MediaStatus;
+	sort?: MediaSort[];
 };
 
 export const FORMAT_OPTIONS = [
