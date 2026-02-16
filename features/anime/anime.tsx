@@ -1,12 +1,7 @@
 import { ROUTES } from "constants/routes";
 import { useRouter } from "expo-router";
-import { cssInterop } from "nativewind";
-import { useEffect } from "react";
-import { Text, TouchableOpacity, View, type ViewProps } from "react-native";
-import Animated from "react-native-reanimated";
+import { Text, Image, TouchableOpacity, View, type ViewProps } from "react-native";
 import Rating from "./rating";
-
-cssInterop(Animated.Image, { className: "style" });
 
 type Props = ViewProps & {
 	uri: string;
@@ -29,12 +24,6 @@ const Anime = ({
 	...props
 }: Props) => {
 	const router = useRouter();
-	useEffect(() => {}, []);
-
-	const anime = {
-		mediaId: mediaId,
-		imgSource: uri,
-	};
 
 	return (
 		<TouchableOpacity
@@ -50,9 +39,7 @@ const Anime = ({
 				className="m-2 rounded-2xl overflow-hidden shadow-sm bg-card-bg"
 			>
 				<View className="w-full aspect-video relative">
-					<Animated.Image
-						// @ts-expect-error
-						sharedTransitionTag={`image_${anime.mediaId}`}
+					<Image
 						className="w-full h-full"
 						source={{ uri: uri }}
 						resizeMode="cover"

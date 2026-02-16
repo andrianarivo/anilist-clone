@@ -1,13 +1,16 @@
+import Button from '@components/button'
 import ZoomableImage from '@components/zoomable-image'
 import { Ionicons } from '@expo/vector-icons'
+import AnimeDetailsSkeleton from 'features/anime/anime-details-skeleton'
 import { default as Character } from 'features/anime/character'
+import Rating from 'features/anime/rating'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import { useAnimeDetails } from 'hooks/anime/use-anime-details'
 import { useColorScheme } from 'nativewind'
 import { useState } from 'react'
 import {
+  Image,
   Modal,
   RefreshControl,
   ScrollView,
@@ -18,23 +21,15 @@ import {
   type ViewProps,
 } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated from 'react-native-reanimated'
 import HTML from 'react-native-render-html'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { AnimeDetailsDataFragment } from 'types/gql/graphql'
 
 type AnimeDetailsProps = ViewProps
 
-type AnimeCharacter = {
-  id: string
-  name: string
-  gender: string
-  imageUri: string
-}
-
 const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
   const { colorScheme } = useColorScheme()
-  const _router = useRouter()
+  const router = useRouter()
   const { id, imgSource } = useLocalSearchParams<{
     id: string
     imgSource: string
@@ -48,7 +43,6 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
   if (animeDetails.error) {
     return (
       <SafeAreaView className="flex-1 bg-global-bg">
-        <StatusBar style="light" />
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
           refreshControl={
@@ -60,7 +54,7 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
           }
         >
           <View className="flex-1 justify-center items-center">
-            <Text className="text-white">Error fetching data</Text>
+            <Text className="text-global-text">Error fetching data</Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -83,12 +77,6 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
       title: media.title?.userPreferred ?? 'Unknown',
       description: media.description ?? '',
       year: media.startDate?.year ?? 0,
-      score: Array.from(
-        {
-          length: Math.round((media.averageScore || 0) / 20),
-        },
-        (_, i) => i,
-      ),
       characters,
       popularity: media.popularity,
       coverImage: media.coverImage?.extraLarge,
@@ -96,7 +84,6 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
 
     return (
       <View {...props} className="flex-1 bg-global-bg">
-        <StatusBar style="light" />
         <Modal
           visible={modalVisible}
           transparent={true}
@@ -130,7 +117,7 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
                     }}
                     activeOpacity={0.9}
                   >
-                    <Animated.Image
+                    <Image
                       className="w-full h-[374]"
                       resizeMode="cover"
                       source={{
@@ -140,6 +127,13 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
                     <View className="absolute top-1/2 left-1/2 -translate-x-4 -translate-y-4 bg-black/30 rounded-full p-2">
                       <Ionicons name="expand-outline" size={24} color="white" />
                     </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => router.back()}
+                    className="absolute left-4 z-10 bg-black/40 rounded-full p-2"
+                    style={{ top: insets.top + 8 }}
+                  >
+                    <Ionicons name="chevron-back" size={24} color="white" />
                   </TouchableOpacity>
                   <LinearGradient
                     className="w-full h-20 absolute bottom-0 left-0"
@@ -152,48 +146,31 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
                 <View className="flex-row justify-between items-center mx-3">
                   <View className="flex-row items-center">
                     <View>
-                      <Text className="text-white text-2xl font-bold max-w-[98%] mr-1">
+                      <Text className="text-global-text text-2xl font-bold max-w-[98%] mr-1">
                         {animeDetailsData.title}
                       </Text>
                       <View className="flex-row items-center">
-                        <Text className="text-neutral500 text-sm font-regular">
+                        <Text className="text-secondary-text text-sm">
                           {animeDetailsData.studio}
                         </Text>
-                        <Text className="text-neutral500 text-xs font-regular">
+                        <Text className="text-secondary-text text-xs">
                           {' '}
                           •{' '}
                         </Text>
-                        <Text className="text-neutral500 text-xs font-regular">
+                        <Text className="text-secondary-text text-xs">
                           {animeDetailsData.year}
                         </Text>
                       </View>
                     </View>
                   </View>
-                  <View>
-                    <View className="flex-row-reverse">
-                      {animeDetailsData.score.map((item) => {
-                        return (
-                          <Ionicons
-                            key={`star-${item}`}
-                            name="star"
-                            size={14}
-                            color="#E7C825"
-                            className="mx-[2] my-[5]"
-                          />
-                        )
-                      })}
-                    </View>
-                    <Text className="text-neutral500 text-xs">
-                      From {animeDetailsData.popularity} users
-                    </Text>
-                  </View>
+                  <Rating count={media.averageScore ?? 0} nbUsers={animeDetailsData.popularity ?? undefined} />
                 </View>
-                <View className="text-neutral500 text-sm m-5">
+                <View className="m-5">
                   <HTML
                     tagsStyles={{
                       p: {
                         fontFamily: 'Roboto_400Regular',
-                        color: '#978F8A',
+                        color: colorScheme === 'dark' ? '#acd5f2' : '#564e4a',
                       },
                     }}
                     contentWidth={width}
@@ -225,32 +202,17 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
           }}
           ListFooterComponent={() => {
             return (
-              <View className="h-[110]  justify-center align-center">
-                <View className="h-[52] w-[211]">
-                  <LinearGradient
-                    className="p-[2] rounded-full"
-                    colors={['#19A1BE', '#7D4192']}
-                    start={[0, 1]}
-                    end={[1, 1]}
-                    style={{ flex: 1 }}
-                  >
-                    <View className="flex-1 relative bg-neutral800 rounded-full justify-center align-center">
-                      <Animated.Image
-                        className="absolute left-[-25%]"
-                        source={require('assets/images/button_bg.png')}
-                      />
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log('touch')
-                        }}
-                      >
-                        <Text className="text-white font-bold text-base text-center">
-                          Watch trailer
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </LinearGradient>
-                </View>
+              <View className="h-[110] justify-center items-center">
+                <Button
+                  variant="primary"
+                  onPress={() => {
+                    console.log('touch')
+                  }}
+                  className="rounded-full px-8"
+                  icon={<Ionicons name="play" size={16} color="white" />}
+                >
+                  Watch trailer
+                </Button>
               </View>
             )
           }}
@@ -259,21 +221,7 @@ const AnimeDetails = ({ ...props }: AnimeDetailsProps) => {
     )
   }
 
-  return (
-    <SafeAreaView className="flex-1 bg-global-bg">
-      <StatusBar style="light" />
-      <Animated.Image
-        className="h-[374]"
-        resizeMode="cover"
-        source={{
-          uri: imgSource,
-        }}
-      />
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-white">Loading</Text>
-      </View>
-    </SafeAreaView>
-  )
+  return <AnimeDetailsSkeleton />
 }
 
 export default AnimeDetails
