@@ -18,3 +18,6 @@ web-build/
 .env.local
 *.env
 !.env.example
+
+# Google Play service account key
+google-service-account-key.json

@@ -6,7 +6,9 @@
       "Bash(bun run codegen:*)",
       "Bash(bunx tsc:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(ls:*)",
+      "Bash(npx expo prebuild:*)"
     ]
   }
 }
