@@ -1,7 +1,7 @@
 {
 	"expo": {
-		"name": "My Anime List",
-		"slug": "my-anime-list",
+		"name": "AniExplore",
+		"slug": "aniexplore",
 		"scheme": "anilist-clone",
 		"version": "1.0.0",
 		"orientation": "portrait",
@@ -10,7 +10,7 @@
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#152232"
 		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
@@ -21,7 +21,17 @@
 			"bundleIdentifier": "com.believerbuddy.myanimelist"
 		},
 		"android": {
-			"package": "com.believerbuddy.myanimelist"
+			"package": "com.believerbuddy.myanimelist",
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#1a1a2e"
+			},
+			"permissions": ["INTERNET", "VIBRATE"],
+			"blockedPermissions": [
+				"android.permission.READ_EXTERNAL_STORAGE",
+				"android.permission.WRITE_EXTERNAL_STORAGE",
+				"android.permission.SYSTEM_ALERT_WINDOW"
+			]
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"

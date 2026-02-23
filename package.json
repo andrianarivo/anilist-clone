@@ -12,6 +12,8 @@
 		"eas:android": "eas build --platform android --profile development",
 		"eas:ios": "eas build --platform ios --profile development",
 		"eas:all": "eas build --platform all --profile development",
+		"build:android": "eas build --platform android --profile production --local",
+		"submit:android": "eas submit --platform android --profile production",
 		"ts-check": "tsc --noEmit",
 		"lint": "biome lint .",
 		"format": "biome format --write .",

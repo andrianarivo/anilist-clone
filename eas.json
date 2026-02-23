@@ -1,7 +1,8 @@
 {
 	"cli": {
 		"version": ">= 3.4.0",
-		"promptToConfigurePushNotifications": false
+		"promptToConfigurePushNotifications": false,
+		"appVersionSource": "remote"
 	},
 	"build": {
 		"development": {
@@ -23,13 +24,23 @@
 				"buildType": "apk"
 			}
 		},
-		"preview2": {
+		"production": {
+			"autoIncrement": true,
+			"env": {
+				"EXPO_PUBLIC_ANILIST_API_URL": "https://graphql.anilist.co"
+			},
 			"android": {
-				"gradleCommand": ":app:assembleRelease"
+				"buildType": "app-bundle"
 			}
-		},
-		"preview3": {
-			"developmentClient": true
+		}
+	},
+	"submit": {
+		"production": {
+			"android": {
+				"serviceAccountKeyPath": "./google-service-account-key.json",
+				"track": "internal",
+				"releaseStatus": "draft"
+			}
 		}
 	}
 }
